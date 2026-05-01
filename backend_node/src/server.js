@@ -67,19 +67,22 @@ if (process.env.NODE_ENV === 'production') {
   // Serve static files with caching
   app.use(express.static(frontendPath, {
     maxAge: '1d', // Cache for 1 day
-    etag: true,
-    index: false // Don't auto-serve index.html for all routes
+    etag: true
   }));
   
   // SPA routing - serve index.html for all non-API routes
-  app.get('*', (req, res, next) => {
-    // Skip API routes and socket.io
-    if (req.path.startsWith('/api') || req.path.startsWith('/socket.io') || req.path.startsWith('/health')) {
+  app.use((req, res, next) => {
+    // Skip API routes, socket.io, and health check
+    if (req.path.startsWith('/api') || req.path.startsWith('/socket.io') || req.path === '/health') {
       return next();
     }
     
     // Serve index.html for all other routes (SPA routing)
-    res.sendFile(path.join(frontendPath, 'index.html'));
+    res.sendFile(path.join(frontendPath, 'index.html'), (err) => {
+      if (err) {
+        next(err);
+      }
+    });
   });
 }
 

@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "Gaming portal with 12 classic games",
   "scripts": {
-    "build": "cd frontend && npm install && npm run build",
-    "start": "cd backend_node && npm install && npm start",
-    "postinstall": "npm run build"
+    "build": "cd frontend && npm ci && npm run build",
+    "install-backend": "cd backend_node && npm ci",
+    "start": "cd backend_node && node src/index.js",
+    "postinstall": "npm run build && npm run install-backend"
   },
   "engines": {
     "node": ">=18.0.0",
