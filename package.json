@@ -1,0 +1,14 @@
+{
+  "name": "stellar-games",
+  "version": "1.0.0",
+  "description": "Gaming portal with 12 classic games",
+  "scripts": {
+    "build": "cd frontend && npm install && npm run build",
+    "start": "cd backend_node && npm install && npm start",
+    "postinstall": "npm run build"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}
