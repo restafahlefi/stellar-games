@@ -1,0 +1,48 @@
+# Stellar Games - Production Docker Compose
+# Optimized for production deployment
+
+version: '3.8'
+
+services:
+  # Frontend - Production Build
+  frontend:
+    container_name: stellar_frontend_prod
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+    ports:
+      - "80:80"
+    environment:
+      - NODE_ENV=production
+      - VITE_API_URL=http://your-domain.com/api/v1
+    depends_on:
+      - backend-node
+    networks:
+      - stellar_network
+    restart: always
+
+  # Backend Node.js - Production
+  backend-node:
+    container_name: stellar_backend_node_prod
+    build:
+      context: ./backend_node
+      dockerfile: Dockerfile.prod
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+    networks:
+      - stellar_network
+    restart: always
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  stellar_network:
+    driver: bridge
+    name: stellar_games_network_prod

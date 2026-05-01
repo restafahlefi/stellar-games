@@ -1,0 +1,31 @@
+{
+  "name": "stellar-games-backend",
+  "version": "1.0.0",
+  "description": "Stellar Games Backend API with Domain-Driven Design (DDD) Architecture",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "games",
+    "api",
+    "ddd",
+    "domain-driven-design",
+    "express"
+  ],
+  "author": "Stellar Games Team",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "node-cron": "^3.0.3",
+    "socket.io": "^4.8.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

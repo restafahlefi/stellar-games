@@ -1,0 +1,74 @@
+# Stellar Games - Docker Compose Configuration
+# Domain-Driven Design Architecture
+
+version: '3.8'
+
+services:
+  # Frontend - React + Vite
+  frontend:
+    container_name: stellar_frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - VITE_API_URL=http://localhost:5000/api/v1
+    depends_on:
+      - backend-node
+    networks:
+      - stellar_network
+    restart: unless-stopped
+
+  # Backend Node.js - DDD Architecture
+  backend-node:
+    container_name: stellar_backend_node
+    build:
+      context: ./backend_node
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend_node:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - PORT=5000
+    networks:
+      - stellar_network
+    restart: unless-stopped
+    command: npm run dev
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Backend Python - Optional (Future Implementation)
+  # NOTE: backend_python folder has been removed
+  # Uncomment and recreate folder when ready to use Python backend
+  # backend-python:
+  #   container_name: stellar_backend_python
+  #   build:
+  #     context: ./backend_python
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "8000:8000"
+  #   volumes:
+  #     - ./backend_python:/app
+  #   environment:
+  #     - PYTHONDONTWRITEBYTECODE=1
+  #     - PYTHONUNBUFFERED=1
+  #   networks:
+  #     - stellar_network
+  #   restart: unless-stopped
+
+networks:
+  stellar_network:
+    driver: bridge
+    name: stellar_games_network

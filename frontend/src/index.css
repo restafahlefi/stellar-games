@@ -1,0 +1,365 @@
+@import "tailwindcss";
+
+:root {
+  --color-bg-dark: #020617;
+  --mouse-x: 50%;
+  --mouse-y: 50%;
+}
+
+@layer base {
+  body {
+    margin: 0;
+    overflow-x: hidden;
+    background-color: var(--color-bg-dark);
+    cursor: default;
+  }
+}
+
+/* Smooth Scroll Optimization */
+.bg-layer {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: auto;
+}
+
+/* ===== ANIMATED BACKGROUND WITH GIF SUPPORT ===== */
+
+/* Background Layer with Anime GIF - ULTRA BRIGHT */
+.anime-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background-image: url('/anime-bg.gif');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 1.0; /* 100% - FULL GIF! */
+  filter: blur(0px) brightness(1.5) contrast(1.2) saturate(1.2); /* Maximum effects */
+  pointer-events: none;
+  will-change: auto;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Fallback jika GIF tidak ada - gunakan gradient */
+.anime-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, 
+    rgba(2, 6, 23, 0.95) 0%,
+    rgba(15, 23, 42, 0.9) 50%,
+    rgba(2, 6, 23, 0.95) 100%);
+  z-index: 1;
+}
+
+/* ===== OPTIMIZED GAMING BACKGROUND V3 ===== */
+
+/* Static Aurora Background - No Mouse Tracking for Better Performance */
+.spotlight-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: 
+    /* Static ambient glows at different positions */
+    radial-gradient(circle 600px at 20% 30%,
+      rgba(59, 130, 246, 0.15),
+      transparent 70%),
+    radial-gradient(circle 500px at 80% 70%,
+      rgba(139, 92, 246, 0.12),
+      transparent 70%),
+    radial-gradient(circle 550px at 50% 50%,
+      rgba(236, 72, 153, 0.08),
+      transparent 70%),
+    /* Aurora waves */
+    linear-gradient(125deg, 
+      rgba(59, 130, 246, 0.1) 0%,
+      rgba(139, 92, 246, 0.08) 25%,
+      rgba(236, 72, 153, 0.08) 50%,
+      rgba(16, 185, 129, 0.08) 75%,
+      rgba(59, 130, 246, 0.1) 100%);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 400% 400%;
+  animation: auroraFlow 25s ease infinite;
+  pointer-events: none;
+  will-change: background-position;
+}
+
+@keyframes auroraFlow {
+  0%, 100% {
+    background-position: 0% 0%, 0% 0%, 0% 0%, 0% 50%;
+  }
+  25% {
+    background-position: 0% 0%, 0% 0%, 0% 0%, 50% 75%;
+  }
+  50% {
+    background-position: 0% 0%, 0% 0%, 0% 0%, 100% 50%;
+  }
+  75% {
+    background-position: 0% 0%, 0% 0%, 0% 0%, 50% 25%;
+  }
+}
+
+/* Neon Grid Effect with Perspective */
+.scanner-line {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image: 
+    linear-gradient(rgba(59, 130, 246, 0.025) 1.5px, transparent 1.5px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.025) 1.5px, transparent 1.5px);
+  background-size: 80px 80px;
+  animation: gridPulse 8s ease-in-out infinite;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 40%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 40%, transparent 100%);
+  will-change: opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+@keyframes gridPulse {
+  0%, 100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* Vignette Effect */
+.vignette-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 0%, rgba(2, 6, 23, 0.4) 100%);
+  will-change: auto;
+  transform: translateZ(0);
+}
+
+/* Floating Orbs Animation */
+@keyframes floatOrb {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.4;
+  }
+  33% {
+    transform: translate3d(30px, -40px, 0) scale(1.1);
+    opacity: 0.6;
+  }
+  66% {
+    transform: translate3d(-20px, -20px, 0) scale(0.95);
+    opacity: 0.5;
+  }
+}
+
+/* Shooting Stars */
+@keyframes shootingStar {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(-45deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(-1000px, 500px, 0) rotate(-45deg);
+    opacity: 0;
+  }
+}
+
+/* Pulse Rings */
+@keyframes pulseRing {
+  0% {
+    transform: scale3d(0.8, 0.8, 1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale3d(1.2, 1.2, 1);
+    opacity: 0.2;
+  }
+  100% {
+    transform: scale3d(0.8, 0.8, 1);
+    opacity: 0.6;
+  }
+}
+
+/* Glitch Effect */
+@keyframes glitchLine {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+  10%, 30%, 50%, 70%, 90% {
+    opacity: 0.15;
+  }
+  20%, 40%, 60%, 80% {
+    opacity: 0;
+  }
+  25% {
+    transform: translate3d(-100%, 0, 0);
+  }
+  75% {
+    transform: translate3d(100%, 0, 0);
+  }
+}
+
+/* Scanline Effect */
+@keyframes scanline {
+  0% {
+    transform: translate3d(0, -100%, 0);
+  }
+  100% {
+    transform: translate3d(0, 100vh, 0);
+  }
+}
+
+/* Particle Drift */
+@keyframes particleDrift {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate3d(100px, -800px, 0) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Hexagon Rotation */
+@keyframes hexRotate {
+  from {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.05;
+  }
+  50% {
+    opacity: 0.1;
+  }
+  to {
+    transform: rotate(360deg) scale(1);
+    opacity: 0.05;
+  }
+}
+
+/* Card Pulse & Interaction */
+.game-card {
+  background-color: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(51, 65, 85, 0.5);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.game-card:hover {
+  background-color: rgba(15, 23, 42, 0.9);
+  border-color: rgba(59, 130, 246, 0.5);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* Hardware Accelerated Animations */
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Dark Mode Overrides for UI */
+button {
+  cursor: pointer;
+}
+
+/* 3D Flip Card Animation Utilities */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+/* ===== IDENTITY MODAL ANIMATIONS ===== */
+
+@keyframes scale-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes bounce-slow {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes gradient {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-scale-in {
+  animation: scale-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.animate-bounce-slow {
+  animation: bounce-slow 2s ease-in-out infinite;
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient 3s ease infinite;
+}
+
+/* Smooth transitions for all interactive elements */
+button, input {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button:active {
+  transform: scale(0.95);
+}

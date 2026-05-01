@@ -1,0 +1,132 @@
+/* ===== RESPONSIVE GAME OPTIMIZATION ===== */
+/* Optimized for: Mobile, Tablet, Laptop, Desktop */
+
+/* Base Game Container */
+.game-container {
+  width: 100%;
+  max-width: 100vw;
+  min-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1rem;
+  padding-bottom: 4rem;
+  box-sizing: border-box;
+}
+
+/* Touch-friendly buttons for mobile */
+@media (max-width: 768px) {
+  .game-container {
+    padding: 0.5rem;
+    padding-bottom: 3rem;
+    min-height: auto;
+  }
+  
+  /* Larger touch targets */
+  button, .game-button {
+    min-height: 44px;
+    min-width: 44px;
+    font-size: 14px;
+    padding: 0.75rem 1rem;
+  }
+  
+  /* Prevent zoom on input focus */
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+  
+  /* Hide scrollbars on mobile */
+  .game-area {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  
+  .game-area::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Tablet optimization (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .game-container {
+    padding: 1.5rem;
+  }
+  
+  button, .game-button {
+    font-size: 15px;
+  }
+}
+
+/* Desktop optimization (1024px+) */
+@media (min-width: 1024px) {
+  .game-container {
+    padding: 2rem;
+  }
+}
+
+/* Performance optimizations */
+.game-canvas, .game-board, .game-grid {
+  /* GPU acceleration */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: transform;
+  
+  /* Smooth rendering */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Reduce animations on low-end devices */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Landscape mobile optimization */
+@media (max-width: 896px) and (orientation: landscape) {
+  .game-container {
+    padding: 0.5rem;
+    height: 100vh;
+  }
+  
+  /* Compact header for landscape */
+  .game-header {
+    padding: 0.5rem;
+    font-size: 0.875rem;
+  }
+}
+
+/* High DPI screens */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .game-canvas {
+    image-rendering: -webkit-optimize-contrast;
+  }
+}
+
+/* Prevent text selection during gameplay */
+.game-area, .game-board, .game-canvas {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Optimize font rendering */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
