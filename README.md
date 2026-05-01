@@ -358,7 +358,7 @@ If you like this project, please give it a ⭐ on GitHub!
 
 **🎮 Built with ❤️ by Stellar Games Team**
 
-**Live Demo**: [stellar-games.up.railway.app](stellar-games.up.railway.app)
+**Live Demo**: [[stellar-games.up.railway.app](stellar-games.up.railway.app)](https://stellar-games.up.railway.app/)
 
 ---
 
