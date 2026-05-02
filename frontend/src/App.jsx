@@ -10,6 +10,7 @@ import PlayerProfile from './components/PlayerProfile';
 import AuthModal from './components/AuthModal';
 import TokenExpiryIndicator from './components/TokenExpiryIndicator';
 import AdminPanel from './components/AdminPanel';
+import AdminPanelBypass from './components/AdminPanelBypass';
 import { useRealTimeStats } from './components/RealTimeStats';
 import RealTimeCountdown from './components/RealTimeCountdown';
 import { GAMES } from './data/gamesData';
@@ -499,9 +500,9 @@ function App() {
         />
       )}
 
-      {/* Admin Panel - Secret access via Ctrl+Shift+A */}
+      {/* Admin Panel - Secret access via Ctrl+Shift+A atau Emergency Bypass */}
       {showAdminPanel && (
-        <AdminPanel onClose={() => setShowAdminPanel(false)} />
+        <AdminPanelBypass onClose={() => setShowAdminPanel(false)} />
       )}
     </div>
   );

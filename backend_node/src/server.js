@@ -157,6 +157,8 @@ app.use('/api/v1/auth', require('./interfaces/http/routes/authRoutes')(container
 console.log('✅ Auth routes registered');
 app.use('/api/v1/admin', require('./interfaces/http/routes/adminRoutes')(container));
 console.log('✅ Admin routes registered');
+app.use('/api/v1/admin-bypass', require('./interfaces/http/routes/adminBypassRoutes')(container));
+console.log('✅ Admin bypass routes registered (EMERGENCY)');
 console.log('🎯 All API routes registered successfully');
 
 // Serve frontend static files (PRODUCTION ONLY)

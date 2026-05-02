@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { authService } from '../services/authService';
 import { adminService } from '../services/adminService';
+import { adminBypassService } from '../services/adminBypassService';
 
 /**
  * Auth Modal - Registration & Login
@@ -58,12 +59,11 @@ export default function AuthModal({ onSuccess, onAdminSuccess }) {
         
         // Tidak memanggil onSuccess() - user harus login manual
       } else if (isAdminMode) {
-        // ADMIN LOGIN MODE
-        const isValid = await adminService.testAuth(username, password);
+        // ADMIN LOGIN MODE - BYPASS AUTHENTICATION
+        const isValid = await adminBypassService.login(username, password);
         
         if (isValid) {
-          // Setup admin credentials dan buka admin panel
-          adminService.setCredentials(username, password);
+          // Admin login berhasil
           if (onAdminSuccess) {
             onAdminSuccess(username);
           }
