@@ -275,14 +275,14 @@ export default function Wordle({ onBack, playerName }) {
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col items-center justify-center w-full max-w-md relative">
+      <div className="flex-1 flex flex-col items-center justify-start w-full max-w-md relative pt-4">
         {errorMessage && (
             <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-12 bg-rose-500 text-white px-6 py-2 rounded-xl font-black text-xs shadow-2xl z-50 animate-bounce">
                 {errorMessage}
             </div>
         )}
 
-        <div className={`grid grid-rows-6 gap-2 mb-10 ${errorShake ? 'animate-shake' : ''}`}>
+        <div className={`grid grid-rows-6 gap-2 mb-6 ${errorShake ? 'animate-shake' : ''}`}>
           {guesses.map((guess, i) => (
             <div key={i} className="flex gap-2">
               {Array(COLS).fill(0).map((_, j) => {
@@ -293,7 +293,7 @@ export default function Wordle({ onBack, playerName }) {
                 return (
                   <div 
                     key={j} 
-                    className={`w-12 h-12 sm:w-14 sm:h-14 border-2 rounded-xl flex items-center justify-center text-2xl font-black transition-all duration-500 ${colorClass} ${letter ? 'scale-105' : ''}`}
+                    className={`w-11 h-11 sm:w-14 sm:h-14 border-2 rounded-xl flex items-center justify-center text-xl sm:text-2xl font-black transition-all duration-500 ${colorClass} ${letter ? 'scale-105' : ''}`}
                     style={{ transitionDelay: isRevealed ? `${j * 100}ms` : '0ms' }}
                   >
                     {letter}
@@ -322,10 +322,10 @@ export default function Wordle({ onBack, playerName }) {
           </div>
         )}
 
-        {/* On-Screen Keyboard - Touch Optimized */}
-        <div className="flex flex-col gap-2 w-full">
+        {/* On-Screen Keyboard - Touch Optimized & Compact */}
+        <div className="flex flex-col gap-1.5 w-full mt-4">
           {KEYBOARD_ROWS.map((row, i) => (
-            <div key={i} className="flex justify-center gap-1.5">
+            <div key={i} className="flex justify-center gap-1">
               {row.map(key => {
                 const isAction = key === 'ENTER' || key === 'DEL';
                 return (
@@ -336,7 +336,7 @@ export default function Wordle({ onBack, playerName }) {
                       e.preventDefault();
                       handleKeyPress(key);
                     }}
-                    className={`${isAction ? 'px-4' : 'flex-1 max-w-[40px]'} h-14 rounded-xl font-black text-xs sm:text-sm transition-all active:scale-90 ${isAction ? 'bg-slate-700 hover:bg-slate-600' : getKeyColor(key)} border-b-4 border-black/20 select-none`}
+                    className={`${isAction ? 'px-3 sm:px-4' : 'flex-1 max-w-[32px] sm:max-w-[40px]'} h-12 sm:h-14 rounded-lg sm:rounded-xl font-black text-[10px] sm:text-sm transition-all active:scale-90 ${isAction ? 'bg-slate-700 hover:bg-slate-600' : getKeyColor(key)} border-b-4 border-black/20 select-none`}
                   >
                     {key}
                   </button>

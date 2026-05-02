@@ -318,9 +318,10 @@ export default function Game2048({ onBack, playerName }) {
           ))}
         </div>
       </div>
-      {/* Touch Controls - Swipe Buttons for Mobile */}
-      <div className="mt-8 flex flex-col items-center gap-4">
-        <div className="grid grid-cols-3 gap-3 w-56 h-56 bg-slate-800/50 rounded-3xl p-4 border border-slate-700">
+      {/* Touch Controls - Swipe Buttons for Mobile - COMPACT & RESPONSIVE */}
+      <div className="mt-6 flex flex-col items-center gap-3 sm:hidden">
+        <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">Touch Controls</p>
+        <div className="grid grid-cols-3 gap-2 w-44 h-44 bg-slate-800/50 rounded-2xl p-3 border border-slate-700">
           {/* Up */}
           <div className="col-start-2"></div>
           <button
@@ -329,7 +330,7 @@ export default function Game2048({ onBack, playerName }) {
               e.preventDefault();
               handleKeyDown({ key: 'ArrowUp' });
             }}
-            className="col-start-2 bg-orange-600 hover:bg-orange-500 active:bg-orange-400 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-orange-500 h-full"
+            className="col-start-2 bg-orange-600 hover:bg-orange-500 active:bg-orange-400 rounded-xl flex items-center justify-center text-2xl font-black transition-all active:scale-95 shadow-lg border-2 border-orange-500"
           >
             🔼
           </button>
@@ -341,11 +342,11 @@ export default function Game2048({ onBack, playerName }) {
               e.preventDefault();
               handleKeyDown({ key: 'ArrowLeft' });
             }}
-            className="bg-orange-600 hover:bg-orange-500 active:bg-orange-400 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-orange-500 h-full"
+            className="bg-orange-600 hover:bg-orange-500 active:bg-orange-400 rounded-xl flex items-center justify-center text-2xl font-black transition-all active:scale-95 shadow-lg border-2 border-orange-500"
           >
             ◀️
           </button>
-          <div className="bg-slate-900/50 rounded-2xl flex items-center justify-center text-xl font-black text-orange-400 h-full">
+          <div className="bg-slate-900/50 rounded-xl flex items-center justify-center text-base font-black text-orange-400">
             2048
           </div>
           <button
@@ -354,7 +355,7 @@ export default function Game2048({ onBack, playerName }) {
               e.preventDefault();
               handleKeyDown({ key: 'ArrowRight' });
             }}
-            className="bg-orange-600 hover:bg-orange-500 active:bg-orange-400 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-orange-500 h-full"
+            className="bg-orange-600 hover:bg-orange-500 active:bg-orange-400 rounded-xl flex items-center justify-center text-2xl font-black transition-all active:scale-95 shadow-lg border-2 border-orange-500"
           >
             ▶️
           </button>
@@ -367,14 +368,17 @@ export default function Game2048({ onBack, playerName }) {
               e.preventDefault();
               handleKeyDown({ key: 'ArrowDown' });
             }}
-            className="col-start-2 bg-orange-600 hover:bg-orange-500 active:bg-orange-400 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-orange-500 h-full"
+            className="col-start-2 bg-orange-600 hover:bg-orange-500 active:bg-orange-400 rounded-xl flex items-center justify-center text-2xl font-black transition-all active:scale-95 shadow-lg border-2 border-orange-500"
           >
             🔽
           </button>
         </div>
-        
+      </div>
+
+      {/* Desktop Instructions */}
+      <div className="hidden sm:block mt-6">
         <p className="text-slate-400 text-center text-sm font-medium bg-slate-800/50 px-6 py-3 rounded-full border border-slate-700">
-          Keyboard: <kbd className="bg-slate-700 px-2 py-1 rounded mx-1 text-slate-200 shadow">Arrows</kbd> | Mobile: <span className="text-orange-400 font-bold">Tap Buttons</span>
+          Keyboard: <kbd className="bg-slate-700 px-2 py-1 rounded mx-1 text-slate-200 shadow">Arrow Keys</kbd>
         </p>
       </div>
 
