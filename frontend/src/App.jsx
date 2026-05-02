@@ -68,19 +68,51 @@ function App() {
   useEffect(() => {
     const checkAuth = async () => {
       setIsCheckingAuth(true); // Start checking
-      const user = await authService.verifyToken();
-      if (user) {
-        setIsAuthenticated(true);
-        setPlayerName(user.username);
-        sessionStorage.setItem('stellar_playerName', user.username);
+      
+      try {
+        const user = await authService.verifyToken();
+        if (user) {
+          console.log('✅ User authenticated:', user.username);
+          setIsAuthenticated(true);
+          setPlayerName(user.username);
+          sessionStorage.setItem('stellar_playerName', user.username);
+          
+          // Initialize services
+          achievementService.setCurrentPlayer(user.username);
+          rewardSystem.setCurrentPlayer(user.username);
+          
+          // Hide auth modal if it was showing
+          setShowAuthModal(false);
+        } else {
+          console.log('❌ No valid authentication found');
+          // Reset authentication state
+          setIsAuthenticated(false);
+          setPlayerName('');
+          sessionStorage.removeItem('stellar_playerName');
+          
+          // Clear services
+          achievementService.setCurrentPlayer(null);
+          rewardSystem.setCurrentPlayer(null);
+          
+          // Show auth modal
+          setShowAuthModal(true);
+        }
+      } catch (error) {
+        console.log('❌ Auth verification failed:', error.message);
+        // Reset authentication state on error
+        setIsAuthenticated(false);
+        setPlayerName('');
+        sessionStorage.removeItem('stellar_playerName');
         
-        // Initialize services
-        achievementService.setCurrentPlayer(user.username);
-        rewardSystem.setCurrentPlayer(user.username);
-      } else {
+        // Clear services
+        achievementService.setCurrentPlayer(null);
+        rewardSystem.setCurrentPlayer(null);
+        
+        // Show auth modal
         setShowAuthModal(true);
+      } finally {
+        setIsCheckingAuth(false); // Done checking
       }
-      setIsCheckingAuth(false); // Done checking
     };
 
     checkAuth();
@@ -308,6 +340,15 @@ function App() {
                 <span className="text-slate-400 truncate max-w-[80px] sm:max-w-none">{playerName || 'Guest'}</span>
                 <span className="text-red-400 text-xs hover:scale-110 transition-transform">🚪</span>
               </button>
+            </div>
+          </div>
+
+          {/* Admin Panel Hint - Subtle */}
+          <div className="mb-4 text-center">
+            <div className="inline-flex items-center gap-2 bg-slate-900/30 px-3 py-1 rounded-full border border-slate-800/50 text-xs">
+              <span className="text-slate-500">👑</span>
+              <span className="text-slate-500">Admin Panel:</span>
+              <kbd className="bg-slate-800 px-2 py-0.5 rounded text-slate-400 font-mono text-[10px]">Ctrl+Shift+A</kbd>
             </div>
           </div>
 

@@ -12,6 +12,7 @@ export default function AuthModal({ onSuccess }) {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -43,8 +44,16 @@ export default function AuthModal({ onSuccess }) {
     try {
       if (mode === 'register') {
         const result = await authService.register(username, password);
-        // After successful registration, automatically login
-        onSuccess(result.user.username);
+        
+        // PERBAIKAN: Tidak auto-login setelah registrasi
+        // Tampilkan pesan sukses dan switch ke login mode
+        setRegistrationSuccess(true);
+        setError('✅ Registration successful! Please login with your credentials.');
+        setMode('login');
+        setPassword(''); // Clear password untuk security
+        setConfirmPassword('');
+        
+        // Tidak memanggil onSuccess() - user harus login manual
       } else {
         const result = await authService.login(username, password);
         onSuccess(result.user.username);
@@ -200,6 +209,7 @@ export default function AuthModal({ onSuccess }) {
                 setError('');
                 setPassword('');
                 setConfirmPassword('');
+                setRegistrationSuccess(false); // Reset registration success state
               }}
               className="text-sm text-slate-400 hover:text-blue-400 transition-colors font-bold"
               disabled={loading}
