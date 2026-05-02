@@ -334,7 +334,7 @@ export default function ConnectFourMultiplayer({ onBack, playerName }) {
     };
 
     // Add delay for AI thinking animation with timeout protection
-    const aiTimeout = setTimeout(makeAiMove, Math.random() * 800 + 400); // 0.4-1.2s delay
+    const aiTimeout = setTimeout(makeAiMove, 150); // Quick AI: 150ms - feels natural and responsive
     
     return () => {
       clearTimeout(aiTimeout);

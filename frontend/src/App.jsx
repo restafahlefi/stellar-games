@@ -269,62 +269,68 @@ function App() {
             </div>
           </div>
 
-          {/* STATS CARDS dengan Real-time Indicators */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-6">
-            <div className="stats-card bg-slate-900/40 p-4 sm:p-6 md:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-slate-800 shadow-xl relative">
-              <span className="text-slate-500 text-[9px] sm:text-[10px] font-black uppercase tracking-widest">Total Players</span>
-              <p className="text-3xl sm:text-4xl md:text-5xl font-black mt-2 tracking-tighter">{stats.totalPlayers || 0}</p>
-              <span className="text-slate-600 text-[8px] sm:text-[9px] font-bold mt-1 block">Semua pemain terdaftar</span>
-              {/* Real-time indicator with 3-color system */}
-              <div className="absolute top-3 right-3">
-                <span className={`inline-block w-2 h-2 rounded-full transition-all duration-300 ${getIndicatorColor()}`}></span>
+          {/* STATS CARDS dengan Real-time Indicators - COMPACT */}
+          <div className="mb-8">
+            <h2 className="text-xl font-black mb-4 text-slate-300 flex items-center gap-2">
+              <span>📊</span>
+              <span>Statistics</span>
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="stats-card bg-slate-900/40 p-4 sm:p-5 rounded-2xl border border-slate-800 shadow-xl relative">
+                <span className="text-slate-500 text-[9px] sm:text-[10px] font-black uppercase tracking-widest">Total Players</span>
+                <p className="text-2xl sm:text-3xl font-black mt-2 tracking-tighter">{stats.totalPlayers || 0}</p>
+                <span className="text-slate-600 text-[8px] sm:text-[9px] font-bold mt-1 block">Semua pemain terdaftar</span>
+                {/* Real-time indicator */}
+                <div className="absolute top-3 right-3">
+                  <span className={`inline-block w-2 h-2 rounded-full transition-all duration-300 ${getIndicatorColor()}`}></span>
+                </div>
               </div>
-            </div>
-            <div className="stats-card bg-slate-900/40 p-4 sm:p-6 md:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-slate-800 shadow-xl relative overflow-hidden">
-              <span className="text-slate-500 text-[9px] sm:text-[10px] font-black uppercase tracking-widest">Players Online</span>
-              <p className="text-3xl sm:text-4xl md:text-5xl font-black mt-2 text-emerald-400 tracking-tighter flex items-center gap-2">
-                <span className="inline-block w-2 sm:w-3 h-2 sm:h-3 bg-emerald-500 rounded-full animate-pulse"></span>
-                {stats.activePlayers || 0}
-              </p>
-              <span className="text-slate-600 text-[8px] sm:text-[9px] font-bold mt-1 block">Sedang aktif sekarang</span>
-              {/* Real-time indicator with 3-color system */}
-              <div className="absolute top-3 right-3">
-                <span className={`inline-block w-2 h-2 rounded-full transition-all duration-300 ${getIndicatorColor()}`}></span>
+              <div className="stats-card bg-slate-900/40 p-4 sm:p-5 rounded-2xl border border-slate-800 shadow-xl relative overflow-hidden">
+                <span className="text-slate-500 text-[9px] sm:text-[10px] font-black uppercase tracking-widest">Players Online</span>
+                <p className="text-2xl sm:text-3xl font-black mt-2 text-emerald-400 tracking-tighter flex items-center gap-2">
+                  <span className="inline-block w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+                  {stats.activePlayers || 0}
+                </p>
+                <span className="text-slate-600 text-[8px] sm:text-[9px] font-bold mt-1 block">Sedang aktif sekarang</span>
+                {/* Real-time indicator */}
+                <div className="absolute top-3 right-3">
+                  <span className={`inline-block w-2 h-2 rounded-full transition-all duration-300 ${getIndicatorColor()}`}></span>
+                </div>
               </div>
-            </div>
-            <div className="stats-card bg-slate-900/40 p-4 sm:p-6 md:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-slate-800 shadow-xl relative">
-              <span className="text-slate-500 text-[9px] sm:text-[10px] font-black uppercase tracking-widest">System Status</span>
-              <p className="text-3xl sm:text-4xl md:text-5xl font-black mt-2 text-emerald-500 tracking-tighter">ONLINE</p>
-              <span className="text-slate-600 text-[8px] sm:text-[9px] font-bold mt-1 block">Server berjalan normal</span>
-              {/* Real-time indicator with 3-color system */}
-              <div className="absolute top-3 right-3">
-                <span className={`inline-block w-2 h-2 rounded-full transition-all duration-300 ${getIndicatorColor()}`}></span>
+              <div className="stats-card bg-slate-900/40 p-4 sm:p-5 rounded-2xl border border-slate-800 shadow-xl relative">
+                <span className="text-slate-500 text-[9px] sm:text-[10px] font-black uppercase tracking-widest">System Status</span>
+                <p className="text-2xl sm:text-3xl font-black mt-2 text-emerald-500 tracking-tighter">ONLINE</p>
+                <span className="text-slate-600 text-[8px] sm:text-[9px] font-bold mt-1 block">Server berjalan normal</span>
+                {/* Real-time indicator */}
+                <div className="absolute top-3 right-3">
+                  <span className={`inline-block w-2 h-2 rounded-full transition-all duration-300 ${getIndicatorColor()}`}></span>
+                </div>
               </div>
             </div>
           </div>
 
           {/* REAL-TIME UPDATE STATUS */}
-          <div className="mb-6 flex flex-col items-center justify-center gap-3">
+          <div className="mb-6 flex flex-col items-center justify-center gap-2">
             <div className="bg-slate-900/40 px-4 py-2 rounded-xl border border-slate-800">
               <RealTimeCountdown />
             </div>
             
-            {/* Indicator Legend */}
-            <div className="flex items-center gap-4 text-xs">
-              <div className="flex items-center gap-1.5">
-                <span className="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
+            {/* Indicator Legend - Compact */}
+            <div className="flex items-center gap-3 text-[10px]">
+              <div className="flex items-center gap-1">
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                 <span className="text-slate-500">Normal</span>
               </div>
-              <div className="flex items-center gap-1.5">
-                <span className="inline-block w-2 h-2 rounded-full bg-amber-500"></span>
-                <span className="text-slate-500">Peringatan</span>
+              <div className="flex items-center gap-1">
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                <span className="text-slate-500">Warning</span>
               </div>
-              <div className="flex items-center gap-1.5">
-                <span className="inline-block w-2 h-2 rounded-full bg-red-500"></span>
-                <span className="text-slate-500">Segera Update</span>
+              <div className="flex items-center gap-1">
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-red-500"></span>
+                <span className="text-slate-500">Soon</span>
               </div>
-              <div className="flex items-center gap-1.5">
-                <span className="inline-block w-2 h-2 rounded-full bg-blue-500"></span>
+              <div className="flex items-center gap-1">
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-blue-500"></span>
                 <span className="text-slate-500">Updating</span>
               </div>
             </div>
@@ -338,29 +344,39 @@ function App() {
           )}
 
           {/* LEADERBOARD SECTION (Global + Top Server) */}
-          <div className="mb-6">
+          <div className="mb-8">
+            <h2 className="text-xl font-black mb-4 text-slate-300 flex items-center gap-2">
+              <span>🏆</span>
+              <span>Leaderboard</span>
+            </h2>
             <LeaderboardSection />
           </div>
 
           {/* LEADERBOARD RESET INFO */}
-          <div className="mb-12">
+          <div className="mb-8">
             <LeaderboardResetInfo />
           </div>
 
           {/* GAMES GRID */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {GAMES.map(game => (
-              <button 
-                key={game.id} 
-                onClick={() => handleGameLaunch(game.id)} 
-                className="game-card group bg-slate-900/30 p-6 sm:p-8 rounded-[2.5rem] border border-slate-800/50 hover:border-blue-500/50 transition-all hover:bg-slate-900/60 text-left active:scale-95 active:bg-slate-900/80 min-h-[180px] sm:min-h-[200px]"
-                style={{ touchAction: 'manipulation' }}
-              >
-                <div className="text-4xl sm:text-5xl mb-4 sm:mb-6 group-hover:scale-110 transition-transform">{game.icon?.[0] || '🎮'}</div>
-                <h3 className="text-xl sm:text-2xl font-black mb-2">{game.name}</h3>
-                <p className="text-slate-500 text-xs font-bold leading-relaxed">{game.desc}</p>
-              </button>
-            ))}
+          <div className="mb-8">
+            <h2 className="text-xl font-black mb-4 text-slate-300 flex items-center gap-2">
+              <span>🎮</span>
+              <span>All Games</span>
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {GAMES.map(game => (
+                <button 
+                  key={game.id} 
+                  onClick={() => handleGameLaunch(game.id)} 
+                  className="game-card group bg-slate-900/30 p-6 rounded-2xl border border-slate-800/50 hover:border-blue-500/50 transition-all duration-300 hover:bg-slate-900/60 hover:scale-105 hover:shadow-2xl text-left active:scale-95 active:bg-slate-900/80 min-h-[160px]"
+                  style={{ touchAction: 'manipulation' }}
+                >
+                  <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">{game.icon?.[0] || '🎮'}</div>
+                  <h3 className="text-lg font-black mb-2">{game.name}</h3>
+                  <p className="text-slate-500 text-xs font-bold leading-relaxed">{game.desc}</p>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
           )}

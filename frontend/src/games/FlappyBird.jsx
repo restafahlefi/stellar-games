@@ -606,11 +606,24 @@ export default function FlappyBird({ onBack, playerName }) {
         )}
       </div>
 
-      <div className="mt-6 text-center">
-        <p className="text-slate-400 font-medium bg-slate-800/50 px-6 py-3 rounded-full border border-slate-700">
+      {/* Touch Controls - Tap Button for Mobile */}
+      <div className="mt-8 flex flex-col items-center gap-4">
+        <button
+          onClick={jump}
+          onTouchStart={(e) => {
+            e.preventDefault();
+            jump();
+          }}
+          className="w-64 h-20 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 active:scale-95 rounded-2xl flex items-center justify-center gap-3 text-white font-black text-2xl shadow-2xl border-4 border-amber-600 transition-all"
+        >
+          <span className="text-4xl">👆</span>
+          <span>TAP TO FLAP</span>
+        </button>
+        
+        <p className="text-slate-400 text-center text-sm font-medium bg-slate-800/50 px-6 py-3 rounded-full border border-slate-700">
           <kbd className="bg-slate-700 px-2 py-1 rounded mx-1 text-slate-200 shadow">SPACE</kbd> 
           or 
-          <kbd className="bg-slate-700 px-2 py-1 rounded mx-1 text-slate-200 shadow">CLICK</kbd> 
+          <kbd className="bg-slate-700 px-2 py-1 rounded mx-1 text-slate-200 shadow">TAP BUTTON</kbd> 
           to flap!
         </p>
       </div>

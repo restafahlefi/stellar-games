@@ -334,13 +334,51 @@ export default function Snake({ onBack, playerName }) {
         )}
       </div>
 
-      <div className="mt-10 grid grid-cols-3 gap-3 sm:hidden">
-        <div></div>
-        <button onClick={(e) => { e.currentTarget.blur(); changeDirection('ArrowUp'); }} className="w-16 h-16 bg-slate-800 rounded-2xl flex items-center justify-center text-3xl active:scale-90 transition-transform shadow-xl border border-slate-700">⬆️</button>
-        <div></div>
-        <button onClick={(e) => { e.currentTarget.blur(); changeDirection('ArrowLeft'); }} className="w-16 h-16 bg-slate-800 rounded-2xl flex items-center justify-center text-3xl active:scale-90 transition-transform shadow-xl border border-slate-700">⬅️</button>
-        <button onClick={(e) => { e.currentTarget.blur(); changeDirection('ArrowDown'); }} className="w-16 h-16 bg-slate-800 rounded-2xl flex items-center justify-center text-3xl active:scale-90 transition-transform shadow-xl border border-slate-700">⬇️</button>
-        <button onClick={(e) => { e.currentTarget.blur(); changeDirection('ArrowRight'); }} className="w-16 h-16 bg-slate-800 rounded-2xl flex items-center justify-center text-3xl active:scale-90 transition-transform shadow-xl border border-slate-700">➡️</button>
+      {/* Touch Controls - Virtual D-Pad for Mobile */}
+      <div className="mt-8 flex flex-col items-center gap-4 sm:hidden">
+        <p className="text-slate-400 text-xs font-bold">TOUCH CONTROLS</p>
+        <div className="grid grid-cols-3 gap-3 w-52 h-52 bg-slate-800/50 rounded-3xl p-4 border border-slate-700">
+          {/* Row 1 - Up */}
+          <div className="opacity-0"></div>
+          <button 
+            onClick={(e) => { e.currentTarget.blur(); changeDirection('ArrowUp'); }}
+            onTouchStart={(e) => { e.preventDefault(); changeDirection('ArrowUp'); }}
+            className="bg-slate-700 hover:bg-slate-600 active:bg-emerald-500 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600"
+          >
+            ↑
+          </button>
+          <div className="opacity-0"></div>
+          
+          {/* Row 2 - Left, Center, Right */}
+          <button 
+            onClick={(e) => { e.currentTarget.blur(); changeDirection('ArrowLeft'); }}
+            onTouchStart={(e) => { e.preventDefault(); changeDirection('ArrowLeft'); }}
+            className="bg-slate-700 hover:bg-slate-600 active:bg-emerald-500 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600"
+          >
+            ←
+          </button>
+          <div className="bg-slate-900/50 rounded-2xl flex items-center justify-center text-4xl border-2 border-slate-700">
+            🐍
+          </div>
+          <button 
+            onClick={(e) => { e.currentTarget.blur(); changeDirection('ArrowRight'); }}
+            onTouchStart={(e) => { e.preventDefault(); changeDirection('ArrowRight'); }}
+            className="bg-slate-700 hover:bg-slate-600 active:bg-emerald-500 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600"
+          >
+            →
+          </button>
+          
+          {/* Row 3 - Down */}
+          <div className="opacity-0"></div>
+          <button 
+            onClick={(e) => { e.currentTarget.blur(); changeDirection('ArrowDown'); }}
+            onTouchStart={(e) => { e.preventDefault(); changeDirection('ArrowDown'); }}
+            className="bg-slate-700 hover:bg-slate-600 active:bg-emerald-500 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600"
+          >
+            ↓
+          </button>
+          <div className="opacity-0"></div>
+        </div>
       </div>
 
       {/* Daily Challenge Card */}
