@@ -59,6 +59,7 @@ app.post('/api/v1/admin/leaderboard/reset', async (req, res) => {
 app.use('/api/v1/games', require('./interfaces/http/routes/gameRoutes'));
 app.use('/api/v1/players', require('./interfaces/http/routes/playerRoutes'));
 app.use('/api/v1/leaderboard', require('./interfaces/http/routes/leaderboardRoutes'));
+app.use('/api/v1/auth', require('./interfaces/http/routes/authRoutes')(container.authController));
 
 // Serve frontend static files (PRODUCTION ONLY)
 // Check if running in production or on Railway
