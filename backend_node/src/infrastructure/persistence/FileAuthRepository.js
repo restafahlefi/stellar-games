@@ -2,10 +2,12 @@ const fs = require('fs').promises;
 const path = require('path');
 const User = require('../../domain/auth/entities/User');
 const { generateId } = require('../../shared/utils/idGenerator');
+const githubBackupService = require('../backup/GitHubBackupService');
 
 /**
  * File-based Auth Repository
  * Stores users in JSON file for persistence
+ * Automatically backs up to GitHub to survive Railway redeployments
  */
 class FileAuthRepository {
   constructor() {
@@ -21,6 +23,12 @@ class FileAuthRepository {
     if (this.initialized) return;
 
     try {
+      // Initialize GitHub backup service first
+      await githubBackupService.initialize();
+      
+      // Try to restore from GitHub (in case of Railway redeploy)
+      await githubBackupService.restore();
+
       // Ensure data directory exists
       const dataDir = path.dirname(this.filePath);
       await fs.mkdir(dataDir, { recursive: true });
@@ -50,7 +58,7 @@ class FileAuthRepository {
   }
 
   /**
-   * Save users to file
+   * Save users to file and backup to GitHub
    */
   async saveToFile() {
     try {
@@ -67,6 +75,11 @@ class FileAuthRepository {
         JSON.stringify(usersArray, null, 2),
         'utf8'
       );
+
+      // Trigger GitHub backup asynchronously (don't wait for it)
+      githubBackupService.backup('User data modified').catch(err => {
+        console.error('⚠️  GitHub backup failed:', err.message);
+      });
     } catch (error) {
       console.error('❌ Error saving users to file:', error);
     }

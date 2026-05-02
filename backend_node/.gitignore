@@ -28,3 +28,7 @@ logs/
 # Build
 dist/
 build/
+
+# Data (backed up to GitHub separately)
+data/
+!data/.gitkeep
