@@ -292,6 +292,78 @@ class AdminService {
       message: 'Logging system not yet implemented'
     };
   }
+
+  /**
+   * Get backup status dari semua backup services
+   * @returns {Promise<Object>} - Comprehensive backup status
+   */
+  async getBackupStatus() {
+    try {
+      return await this.authRepository.getBackupStatus();
+    } catch (error) {
+      console.error('❌ Error getting backup status:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Force backup ke semua services
+   * @returns {Promise<Object>} - Backup results
+   */
+  async forceBackup() {
+    try {
+      return await this.authRepository.forceBackup();
+    } catch (error) {
+      console.error('❌ Error forcing backup:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Verify all backups integrity
+   * @returns {Promise<Object>} - Verification results
+   */
+  async verifyBackups() {
+    try {
+      return await this.authRepository.verifyBackups();
+    } catch (error) {
+      console.error('❌ Error verifying backups:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Authenticate admin user (enhanced)
+   * @param {string} username 
+   * @param {string} password 
+   * @returns {Promise<boolean>}
+   */
+  async authenticateAdmin(username, password) {
+    try {
+      // Default admin credentials
+      const defaultAdmin = {
+        username: process.env.ADMIN_USERNAME || 'admin',
+        password: process.env.ADMIN_PASSWORD || 'stellar2026!'
+      };
+
+      // Check against default admin
+      if (username === defaultAdmin.username) {
+        return password === defaultAdmin.password;
+      }
+
+      // Check against database admin users
+      const user = await this.authRepository.findByUsername(username);
+      if (!user || user.role !== 'admin') {
+        return false;
+      }
+
+      const bcrypt = require('bcryptjs');
+      return await bcrypt.compare(password, user.passwordHash);
+    } catch (error) {
+      console.error('❌ Admin authentication error:', error);
+      return false;
+    }
+  }
 }
 
 module.exports = AdminService;

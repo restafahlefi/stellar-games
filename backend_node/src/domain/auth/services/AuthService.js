@@ -10,6 +10,9 @@ class AuthService {
     this.authRepository = authRepository;
     this.JWT_SECRET = process.env.JWT_SECRET || 'stellar-games-secret-key-2026';
     this.JWT_EXPIRY = '30d'; // 30 days (extended for better UX)
+    
+    // Log JWT secret (first 10 chars only for security)
+    console.log('🔐 JWT Secret initialized:', this.JWT_SECRET.substring(0, 10) + '...');
   }
 
   /**
@@ -94,15 +97,21 @@ class AuthService {
    */
   async verifyToken(token) {
     try {
+      console.log('🔍 Verifying token:', token.substring(0, 20) + '...');
       const decoded = jwt.verify(token, this.JWT_SECRET);
+      console.log('✅ Token decoded:', decoded);
+      
       const user = await this.authRepository.findById(decoded.userId);
       
       if (!user) {
+        console.log('❌ User not found:', decoded.userId);
         throw new Error('User not found');
       }
 
+      console.log('✅ User verified:', user.username);
       return user;
     } catch (error) {
+      console.log('❌ Token verification failed:', error.message);
       throw new Error('Invalid or expired token');
     }
   }

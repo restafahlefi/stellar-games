@@ -1,8 +1,8 @@
 const express = require('express');
-const { rateLimitService } = require('../../../infrastructure/middleware/rateLimitMiddleware');
+const { rateLimitService } = require('../../middleware/rateLimitMiddleware');
 
 /**
- * Enhanced Admin API Routes
+ * Admin API Routes
  * Secure admin endpoints untuk user management, system monitoring, backup control
  */
 function createAdminRoutes(container) {
@@ -79,23 +79,6 @@ function createAdminRoutes(container) {
     }
   });
 
-  // Legacy dashboard endpoint (for backward compatibility)
-  router.get('/dashboard', requireAdmin, async (req, res) => {
-    try {
-      const stats = await adminService.getDashboardStats();
-      res.json({
-        success: true,
-        data: stats
-      });
-    } catch (error) {
-      console.error('❌ Admin dashboard error:', error);
-      res.status(500).json({
-        success: false,
-        error: 'Failed to get dashboard data'
-      });
-    }
-  });
-
   // ===================
   // USER MANAGEMENT
   // ===================
@@ -117,36 +100,6 @@ function createAdminRoutes(container) {
       res.status(500).json({
         success: false,
         error: 'Failed to get users'
-      });
-    }
-  });
-
-  /**
-   * GET /api/v1/admin/users/:id
-   * Get specific user by ID
-   */
-  router.get('/users/:id', requireAdmin, async (req, res) => {
-    try {
-      const { id } = req.params;
-      const users = await adminService.getAllUsers();
-      const user = users.find(u => u.id === id);
-      
-      if (!user) {
-        return res.status(404).json({
-          success: false,
-          error: 'User not found'
-        });
-      }
-      
-      res.json({
-        success: true,
-        data: user
-      });
-    } catch (error) {
-      console.error('❌ Admin get user error:', error);
-      res.status(500).json({
-        success: false,
-        error: 'Failed to get user'
       });
     }
   });
@@ -338,10 +291,10 @@ function createAdminRoutes(container) {
   // ===================
 
   /**
-   * GET /api/v1/admin/analytics/games/:gameId
+   * GET /api/v1/admin/games/:gameId/analytics
    * Get detailed analytics untuk specific game
    */
-  router.get('/analytics/games/:gameId', requireAdmin, async (req, res) => {
+  router.get('/games/:gameId/analytics', requireAdmin, async (req, res) => {
     try {
       const { gameId } = req.params;
       const analytics = await adminService.getGameAnalytics(gameId);

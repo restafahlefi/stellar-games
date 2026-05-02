@@ -10,7 +10,8 @@
     "check-users": "node scripts/check-users.js",
     "setup-github": "node scripts/setup-github-backup.js",
     "migrate-github": "node scripts/migrate-to-github.js",
-    "create-admin": "node scripts/force-create-admin.js"
+    "create-admin": "node scripts/force-create-admin.js",
+    "test-env-backup": "node scripts/test-env-backup.js"
   },
   "keywords": [
     "games",

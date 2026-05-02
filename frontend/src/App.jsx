@@ -9,6 +9,7 @@ import DailyChallengeButton from './components/DailyChallengeButton';
 import PlayerProfile from './components/PlayerProfile';
 import AuthModal from './components/AuthModal';
 import TokenExpiryIndicator from './components/TokenExpiryIndicator';
+import AdminPanel from './components/AdminPanel';
 import { useRealTimeStats } from './components/RealTimeStats';
 import RealTimeCountdown from './components/RealTimeCountdown';
 import { GAMES } from './data/gamesData';
@@ -61,6 +62,7 @@ function App() {
   const [playerName, setPlayerName] = useState('');
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true); // NEW: Checking auth state
+  const [showAdminPanel, setShowAdminPanel] = useState(false); // NEW: Admin panel state
 
   // Check authentication on mount
   useEffect(() => {
@@ -82,6 +84,19 @@ function App() {
     };
 
     checkAuth();
+  }, []);
+
+  // Admin panel keyboard shortcut (Ctrl+Shift+A)
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+        e.preventDefault();
+        setShowAdminPanel(true);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   // Use RealTimeStats hook untuk synchronized updates
@@ -427,6 +442,11 @@ function App() {
             // No need for setTimeout - let LoadingScreen control its own lifecycle
           }}
         />
+      )}
+
+      {/* Admin Panel - Secret access via Ctrl+Shift+A */}
+      {showAdminPanel && (
+        <AdminPanel onClose={() => setShowAdminPanel(false)} />
       )}
     </div>
   );
