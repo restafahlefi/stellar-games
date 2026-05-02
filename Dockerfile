@@ -32,12 +32,18 @@ FROM node:20-alpine
 
 WORKDIR /app
 
+# Install git for GitHub Backup Service
+RUN apk add --no-cache git
+
 # Copy backend dependencies and source
 COPY --from=backend-builder /app/backend/node_modules ./node_modules
 COPY backend_node/ ./
 
 # Copy built frontend to backend's public directory
 COPY --from=frontend-builder /app/frontend/dist ./frontend/dist
+
+# Create data directory for user storage
+RUN mkdir -p /app/data
 
 # Create non-root user for security
 RUN addgroup -g 1001 -S nodejs && \
