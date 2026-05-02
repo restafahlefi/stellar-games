@@ -66,6 +66,8 @@ class FileAuthRepository {
         id: user.id,
         username: user.username,
         passwordHash: user.passwordHash,
+        email: user.email || null,
+        role: user.role || 'user',
         createdAt: user.createdAt,
         lastLoginAt: user.lastLoginAt
       }));
@@ -95,6 +97,8 @@ class FileAuthRepository {
       id: generateId(),
       username: userData.username,
       passwordHash: userData.passwordHash,
+      email: userData.email || null,
+      role: userData.role || 'user',
       createdAt: new Date().toISOString()
     });
 
@@ -165,6 +169,37 @@ class FileAuthRepository {
   async getAllUsers() {
     await this.initialize();
     return Array.from(this.users.values());
+  }
+
+  /**
+   * Find all users (alias for getAllUsers)
+   */
+  async findAll() {
+    return this.getAllUsers();
+  }
+
+  /**
+   * Update user (alias for updateUser)
+   */
+  async update(id, updates) {
+    return this.updateUser(id, updates);
+  }
+
+  /**
+   * Delete user
+   */
+  async delete(id) {
+    await this.initialize();
+
+    const user = this.users.get(id);
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    this.users.delete(id);
+    await this.saveToFile();
+
+    return true;
   }
 }
 

@@ -12,6 +12,7 @@ const GameService = require('../../domain/games/services/GameService');
 const PlayerService = require('../../domain/players/services/PlayerService');
 const LeaderboardService = require('../../domain/leaderboard/services/LeaderboardService');
 const AuthService = require('../../domain/auth/services/AuthService');
+const AdminService = require('../../domain/admin/services/AdminService');
 
 // Use Cases
 const GetAllGamesUseCase = require('../../application/useCases/games/GetAllGamesUseCase');
@@ -41,6 +42,7 @@ const gameService = new GameService(gameRepository, playerRepository);
 const playerService = new PlayerService(playerRepository);
 const leaderboardService = new LeaderboardService(scoreRepository, playerRepository);
 const authService = new AuthService(authRepository);
+const adminService = new AdminService(authRepository, playerRepository, scoreRepository, gameRepository);
 
 // Initialize Use Cases
 const getAllGamesUseCase = new GetAllGamesUseCase(gameService);
@@ -72,6 +74,7 @@ module.exports = {
   playerService,
   leaderboardService,
   authService,
+  adminService,
   
   // Use Cases
   getAllGamesUseCase,
@@ -87,6 +90,11 @@ module.exports = {
   gameController,
   playerController,
   leaderboardController,
-  authController
+  authController,
+
+  // Resolve method for dynamic dependency resolution
+  resolve(name) {
+    return this[name];
+  }
 };
 
