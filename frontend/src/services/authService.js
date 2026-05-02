@@ -158,6 +158,13 @@ class AuthService {
   }
 
   /**
+   * Get current user (alias for getUser)
+   */
+  getCurrentUser() {
+    return this.getUser();
+  }
+
+  /**
    * Check if user is authenticated
    */
   isAuthenticated() {
