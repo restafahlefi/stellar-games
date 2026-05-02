@@ -1,0 +1,52 @@
+# Node modules
+**/node_modules
+**/npm-debug.log
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+*.md
+!README.md
+docs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment files (will be set by Railway)
+**/.env
+**/.env.*
+!**/.env.example
+
+# Build artifacts
+**/dist
+**/build
+**/.next
+
+# Test files
+**/__tests__
+**/*.test.js
+**/*.spec.js
+
+# Docker files
+**/Dockerfile*
+**/docker-compose*.yml
+**/.dockerignore
+
+# Scripts
+scripts/
+
+# Temporary files
+**/tmp
+**/temp
+**/.cache
