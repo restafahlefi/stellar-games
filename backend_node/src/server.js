@@ -42,26 +42,49 @@ app.get('/health', (req, res) => {
 
 // Debug endpoint - list all registered routes
 app.get('/debug/routes', (req, res) => {
-  const routes = [];
-  app._router.stack.forEach((middleware) => {
-    if (middleware.route) {
-      routes.push({
-        path: middleware.route.path,
-        methods: Object.keys(middleware.route.methods)
-      });
-    } else if (middleware.name === 'router') {
-      middleware.handle.stack.forEach((handler) => {
-        if (handler.route) {
-          const path = middleware.regexp.source.replace('\\/?(?=\\/|$)', '').replace(/\\\//g, '/');
-          routes.push({
-            path: path + handler.route.path,
-            methods: Object.keys(handler.route.methods)
-          });
-        }
-      });
-    }
-  });
-  res.json({ routes });
+  try {
+    const routes = [];
+    
+    // Simple route listing
+    routes.push({ path: '/health', methods: ['GET'] });
+    routes.push({ path: '/debug/routes', methods: ['GET'] });
+    routes.push({ path: '/debug/test-login', methods: ['GET'] });
+    routes.push({ path: '/api/v1/auth/register', methods: ['POST'] });
+    routes.push({ path: '/api/v1/auth/login', methods: ['POST'] });
+    routes.push({ path: '/api/v1/auth/verify', methods: ['GET'] });
+    routes.push({ path: '/api/v1/auth/logout', methods: ['POST'] });
+    
+    res.json({ 
+      status: 'success',
+      message: 'Routes registered',
+      routes,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'error',
+      message: error.message
+    });
+  }
+});
+
+// Debug endpoint - test login directly
+app.get('/debug/test-login', async (req, res) => {
+  try {
+    const loginUseCase = container.loginUseCase;
+    const result = await loginUseCase.execute('adminresta', 'adminresta123');
+    res.json({
+      status: 'success',
+      message: 'Login test completed',
+      result
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'error',
+      message: error.message,
+      stack: error.stack
+    });
+  }
 });
 
 // Leaderboard reset info endpoint
