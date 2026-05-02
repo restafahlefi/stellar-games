@@ -91,28 +91,80 @@ function App() {
     achievementService.setCurrentPlayer(playerName);
     rewardSystem.setCurrentPlayer(playerName);
 
+    // Use localStorage to ensure only one tab sends heartbeat per player
+    const heartbeatKey = `heartbeat_${playerName}`;
+    const tabId = `tab_${Date.now()}_${Math.random()}`;
+    
+    // Mark this tab as the active heartbeat sender
+    const becomeActiveTab = () => {
+      localStorage.setItem(heartbeatKey, tabId);
+    };
+    
+    // Check if this tab should send heartbeat
+    const isActiveTab = () => {
+      return localStorage.getItem(heartbeatKey) === tabId;
+    };
+    
+    // Become active tab initially
+    becomeActiveTab();
+
     // Send initial heartbeat
     playerService.sendHeartbeat(playerName);
 
-    // Send heartbeat every 30 seconds
+    // Send heartbeat every 30 seconds (only if this is the active tab)
     const heartbeatInterval = setInterval(() => {
-      playerService.sendHeartbeat(playerName);
+      if (isActiveTab()) {
+        playerService.sendHeartbeat(playerName);
+      } else {
+        // Try to become active tab if current active tab is gone
+        const currentActive = localStorage.getItem(heartbeatKey);
+        if (!currentActive) {
+          becomeActiveTab();
+          playerService.sendHeartbeat(playerName);
+        }
+      }
     }, 30000);
 
-    // Cleanup function - stops heartbeat when playerName changes or component unmounts
+    // Listen for tab close/refresh to cleanup
+    const handleBeforeUnload = () => {
+      if (isActiveTab()) {
+        // Remove active tab marker
+        localStorage.removeItem(heartbeatKey);
+        
+        // Send disconnect signal to backend
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
+        const baseUrl = apiUrl.replace('/api/v1', '');
+        
+        fetch(`${baseUrl}/api/v1/players/disconnect`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ playerName }),
+          keepalive: true
+        }).catch(() => {});
+      }
+    };
+    
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    // Cleanup function
     return () => {
       clearInterval(heartbeatInterval);
+      window.removeEventListener('beforeunload', handleBeforeUnload);
       
-      // Send disconnect signal to backend
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
-      const baseUrl = apiUrl.replace('/api/v1', '');
-      
-      fetch(`${baseUrl}/api/players/disconnect`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ playerName }),
-        keepalive: true // Important: ensures request completes even if page is closing
-      }).catch(() => {}); // Silent fail
+      if (isActiveTab()) {
+        localStorage.removeItem(heartbeatKey);
+        
+        // Send disconnect signal
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
+        const baseUrl = apiUrl.replace('/api/v1', '');
+        
+        fetch(`${baseUrl}/api/v1/players/disconnect`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ playerName }),
+          keepalive: true
+        }).catch(() => {});
+      }
     };
   }, [playerName]);
 
