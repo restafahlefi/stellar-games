@@ -60,10 +60,12 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [playerName, setPlayerName] = useState('');
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true); // NEW: Checking auth state
 
   // Check authentication on mount
   useEffect(() => {
     const checkAuth = async () => {
+      setIsCheckingAuth(true); // Start checking
       const user = await authService.verifyToken();
       if (user) {
         setIsAuthenticated(true);
@@ -76,6 +78,7 @@ function App() {
       } else {
         setShowAuthModal(true);
       }
+      setIsCheckingAuth(false); // Done checking
     };
 
     checkAuth();
@@ -211,11 +214,21 @@ function App() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-white font-sans selection:bg-blue-500/30 relative overflow-x-hidden">
+      {/* AUTH CHECKING SCREEN - Show while verifying token */}
+      {isCheckingAuth && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950">
+          <div className="flex flex-col items-center gap-4">
+            <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-slate-400 text-sm font-bold">Verifying authentication...</p>
+          </div>
+        </div>
+      )}
+
       {/* LOADING SCREEN - Full screen overlay */}
       {isLoading && <LoadingScreen key={loadingKey} onFinished={() => setIsLoading(false)} />}
       
-      {/* MAIN CONTENT - Only render after loading */}
-      {!isLoading && (
+      {/* MAIN CONTENT - Only render after auth check */}
+      {!isCheckingAuth && !isLoading && (
         <>
           {/* BACKGROUND LAYERS */}
           {/* Layer 1: Anime GIF Background */}
@@ -398,7 +411,7 @@ function App() {
       )}
 
       {/* Auth Modal - Registration & Login */}
-      {showAuthModal && (
+      {!isCheckingAuth && showAuthModal && (
         <AuthModal 
           onSuccess={(username) => {
             setPlayerName(username);
