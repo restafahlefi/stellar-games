@@ -20,6 +20,7 @@ import { playerService } from './services/playerService';
 import { achievementService } from './services/achievementService';
 import { rewardSystem } from './services/rewardSystem';
 import { authService } from './services/authService';
+import { adminBypassService } from './services/adminBypassService';
 import './index.css';
 
 // Direct imports (no lazy loading to avoid loading screen)
@@ -71,6 +72,24 @@ function App() {
       setIsCheckingAuth(true); // Start checking
       
       try {
+        // PERBAIKAN: Check admin session first
+        if (adminBypassService.isLoggedIn()) {
+          console.log('👑 Admin session found, opening admin panel...');
+          const adminUsername = localStorage.getItem('stellar_admin_username');
+          setPlayerName(adminUsername);
+          setIsAuthenticated(true);
+          setShowAuthModal(false);
+          setShowAdminPanel(true); // Langsung buka admin panel
+          
+          // Initialize services
+          achievementService.setCurrentPlayer(adminUsername);
+          rewardSystem.setCurrentPlayer(adminUsername);
+          
+          setIsCheckingAuth(false);
+          return;
+        }
+        
+        // Regular user authentication check
         const user = await authService.verifyToken();
         if (user) {
           console.log('✅ User authenticated:', user.username);
@@ -329,8 +348,17 @@ function App() {
               
               {/* Username Button with Logout */}
               <button onClick={() => {
-                // Logout
-                authService.logout();
+                // PERBAIKAN: Logout untuk admin dan user
+                if (adminBypassService.isLoggedIn()) {
+                  // Admin logout
+                  adminBypassService.logout();
+                  setShowAdminPanel(false);
+                } else {
+                  // Regular user logout
+                  authService.logout();
+                }
+                
+                // Clear all states
                 achievementService.setCurrentPlayer(null);
                 rewardSystem.setCurrentPlayer(null);
                 setPlayerName('');
