@@ -87,6 +87,49 @@ app.get('/debug/test-login', async (req, res) => {
   }
 });
 
+// Debug endpoint - force create admin user
+app.post('/debug/create-admin', async (req, res) => {
+  try {
+    const bcrypt = require('bcryptjs');
+    const authRepository = container.authRepository;
+    
+    // Check if admin already exists
+    const existingAdmin = await authRepository.findByUsername('adminresta');
+    
+    if (existingAdmin) {
+      // Delete existing admin
+      await authRepository.delete(existingAdmin.id);
+    }
+    
+    // Create new admin with fresh password hash
+    const passwordHash = await bcrypt.hash('adminresta123', 10);
+    
+    const adminUser = await authRepository.createUser({
+      username: 'adminresta',
+      passwordHash,
+      email: 'admin@stellargames.com',
+      role: 'admin'
+    });
+    
+    res.json({
+      status: 'success',
+      message: 'Admin user created successfully',
+      user: {
+        id: adminUser.id,
+        username: adminUser.username,
+        role: adminUser.role,
+        email: adminUser.email
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'error',
+      message: error.message,
+      stack: error.stack
+    });
+  }
+});
+
 // Leaderboard reset info endpoint
 app.get('/api/v1/leaderboard/reset-info', (req, res) => {
   const resetInfo = leaderboardScheduler.getResetInfo();
