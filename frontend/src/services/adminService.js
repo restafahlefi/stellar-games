@@ -42,12 +42,17 @@ class AdminService {
     try {
       this.setCredentials(username, password);
       
-      const response = await fetch(`${this.apiUrl}/admin/stats`, {
+      const response = await fetch(`${this.apiUrl}/admin/test-auth`, {
         method: 'GET',
         headers: this.getHeaders()
       });
 
-      return response.ok;
+      if (response.ok) {
+        const data = await response.json();
+        return data.success;
+      }
+      
+      return false;
     } catch (error) {
       console.error('❌ Admin auth test failed:', error);
       return false;

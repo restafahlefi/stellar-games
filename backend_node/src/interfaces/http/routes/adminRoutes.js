@@ -47,6 +47,26 @@ function createAdminRoutes(container) {
   // ===================
 
   /**
+   * GET /api/v1/admin/test-auth
+   * Simple admin auth test endpoint
+   */
+  router.get('/test-auth', requireAdmin, async (req, res) => {
+    try {
+      res.json({
+        success: true,
+        message: 'Admin authentication successful',
+        adminUser: req.adminUser
+      });
+    } catch (error) {
+      console.error('❌ Admin test auth error:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Test auth failed'
+      });
+    }
+  });
+
+  /**
    * GET /api/v1/admin/stats
    * Get comprehensive system statistics
    */

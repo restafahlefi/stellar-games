@@ -353,10 +353,9 @@ export default function AuthModal({ onSuccess, onAdminSuccess }) {
                   {isAdminMode ? 'Admin Authentication' : 'Secure Authentication'}
                 </p>
                 {isAdminMode ? (
-                  <div className="text-[10px] leading-relaxed text-slate-500 space-y-1">
-                    <div>Default: <span className="text-slate-400 font-mono">admin / stellar2026!</span></div>
-                    <div>Custom: <span className="text-slate-400 font-mono">adminresta / adminresta123</span></div>
-                  </div>
+                  <p className="text-slate-500 text-[10px] leading-relaxed">
+                    Enter your admin credentials to access the management panel.
+                  </p>
                 ) : (
                   <p className="text-slate-500 text-[10px] leading-relaxed">
                     Your password is encrypted and stored securely. Join the <span className="text-emerald-400 font-bold">Global Leaderboard</span>!
