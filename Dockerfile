@@ -1,6 +1,6 @@
 # Multi-stage build for Railway All-in-One Deployment
 # Stage 1: Build Frontend
-FROM node:18-alpine AS frontend-builder
+FROM node:20-alpine AS frontend-builder
 
 WORKDIR /app/frontend
 
@@ -17,7 +17,7 @@ COPY frontend/ ./
 RUN npm run build
 
 # Stage 2: Build Backend
-FROM node:18-alpine AS backend-builder
+FROM node:20-alpine AS backend-builder
 
 WORKDIR /app/backend
 
@@ -28,7 +28,7 @@ COPY backend_node/package*.json ./
 RUN npm ci --only=production --legacy-peer-deps
 
 # Stage 3: Production
-FROM node:18-alpine
+FROM node:20-alpine
 
 WORKDIR /app
 
