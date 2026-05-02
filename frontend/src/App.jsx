@@ -237,22 +237,22 @@ function App() {
             /* Show Homepage */
             <div className="p-4 sm:p-8 max-w-7xl mx-auto animate-fade-in relative z-10 overflow-x-hidden">
           {/* HEADER */}
-          <div className="flex justify-between items-center mb-12">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 sm:mb-12 gap-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center font-black text-xl shadow-lg shadow-blue-900/20">S</div>
-              <h1 className="text-2xl font-black tracking-tighter uppercase">Stellar Games <span className="text-blue-500">Portal</span></h1>
+              <h1 className="text-xl sm:text-2xl font-black tracking-tighter uppercase">Stellar Games <span className="text-blue-500">Portal</span></h1>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
               {/* Volume Control */}
               <VolumeControl />
               
-              {/* Achievement Button */}
+              {/* Achievement Button - Always visible */}
               <AchievementButton />
               
-              {/* Daily Challenge Button */}
+              {/* Daily Challenge Button - Always visible */}
               <DailyChallengeButton />
               
-              {/* Username Button */}
+              {/* Username Button with Logout */}
               <button onClick={() => {
                 // Clear session and show modal again
                 sessionStorage.removeItem('stellar_playerName');
@@ -263,11 +263,11 @@ function App() {
                 
                 setPlayerName(''); // This will trigger useEffect cleanup to stop heartbeat
                 setShowNameModal(true);
-              }} className="bg-slate-900 px-4 py-2 rounded-xl border border-slate-800 text-sm font-bold hover:border-blue-500/50 transition-all flex items-center gap-2">
+              }} className="bg-slate-900 px-3 sm:px-4 py-2 rounded-xl border border-slate-800 text-xs sm:text-sm font-bold hover:border-blue-500/50 transition-all flex items-center gap-2">
                 {/* Status Indicator - Green when online, Red when offline */}
                 <span className={`w-2 h-2 rounded-full transition-all duration-500 ${playerName ? 'bg-emerald-500 animate-pulse' : 'bg-red-500'}`}></span>
-                <span className="text-slate-400">{playerName || 'Guest'}</span>
-                {playerName && <span className="text-slate-600 text-xs">✕</span>}
+                <span className="text-slate-400 truncate max-w-[80px] sm:max-w-none">{playerName || 'Guest'}</span>
+                <span className="text-slate-500 text-xs">🚪</span>
               </button>
             </div>
           </div>

@@ -19,9 +19,9 @@ const getAudioContext = () => {
 /**
  * Play sound effect dengan volume control global
  * @param {string} type - Tipe sound effect
- * @param {number} baseVolume - Volume dasar (0-1), default 0.3
+ * @param {number} baseVolume - Volume dasar (0-1), default 0.5 (increased from 0.3)
  */
-export const playGameSound = (type, baseVolume = 0.3) => {
+export const playGameSound = (type, baseVolume = 0.5) => {
   try {
     const ctx = getAudioContext();
     if (!ctx) return;
@@ -35,7 +35,7 @@ export const playGameSound = (type, baseVolume = 0.3) => {
     
     // Apply global volume from VolumeControl
     const globalVolume = typeof window.gameVolume !== 'undefined' ? window.gameVolume : 0.7;
-    const finalVolume = baseVolume * globalVolume;
+    const finalVolume = baseVolume * globalVolume * 1.5; // Boost by 1.5x
 
     // Sound definitions
     switch(type) {

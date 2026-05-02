@@ -39,12 +39,13 @@ const playSound = (type) => {
     gainNode.connect(ctx.destination);
     
     const masterVol = typeof window.gameVolume !== 'undefined' ? window.gameVolume : 0.7;
+    const volumeBoost = 1.8; // Boost volume by 1.8x
 
     if (type === 'eat') {
       osc.type = 'sine';
       osc.frequency.setValueAtTime(800, ctx.currentTime);
       osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.05);
-      gainNode.gain.setValueAtTime(0.15 * masterVol, ctx.currentTime);
+      gainNode.gain.setValueAtTime(0.15 * masterVol * volumeBoost, ctx.currentTime);
       gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.05);
       osc.start();
       osc.stop(ctx.currentTime + 0.05);
@@ -52,7 +53,7 @@ const playSound = (type) => {
       osc.type = 'sawtooth';
       osc.frequency.setValueAtTime(150, ctx.currentTime);
       osc.frequency.exponentialRampToValueAtTime(40, ctx.currentTime + 0.4);
-      gainNode.gain.setValueAtTime(0.2 * masterVol, ctx.currentTime);
+      gainNode.gain.setValueAtTime(0.2 * masterVol * volumeBoost, ctx.currentTime);
       gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
       osc.start();
       osc.stop(ctx.currentTime + 0.4);
@@ -62,7 +63,7 @@ const playSound = (type) => {
       osc.frequency.setValueAtTime(400, ctx.currentTime);
       osc.frequency.exponentialRampToValueAtTime(200, ctx.currentTime + 0.2);
       osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.4);
-      gainNode.gain.setValueAtTime(0.25 * masterVol, ctx.currentTime);
+      gainNode.gain.setValueAtTime(0.25 * masterVol * volumeBoost, ctx.currentTime);
       gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
       osc.start();
       osc.stop(ctx.currentTime + 0.5);
@@ -72,7 +73,7 @@ const playSound = (type) => {
       osc.frequency.setValueAtTime(400, ctx.currentTime);
       osc.frequency.exponentialRampToValueAtTime(600, ctx.currentTime + 0.1);
       osc.frequency.exponentialRampToValueAtTime(800, ctx.currentTime + 0.2);
-      gainNode.gain.setValueAtTime(0.2 * masterVol, ctx.currentTime);
+      gainNode.gain.setValueAtTime(0.2 * masterVol * volumeBoost, ctx.currentTime);
       gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.25);
       osc.start();
       osc.stop(ctx.currentTime + 0.25);
@@ -82,7 +83,7 @@ const playSound = (type) => {
       osc.frequency.setValueAtTime(600, ctx.currentTime);
       osc.frequency.exponentialRampToValueAtTime(900, ctx.currentTime + 0.15);
       osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.3);
-      gainNode.gain.setValueAtTime(0.25 * masterVol, ctx.currentTime);
+      gainNode.gain.setValueAtTime(0.25 * masterVol * volumeBoost, ctx.currentTime);
       gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.35);
       osc.start();
       osc.stop(ctx.currentTime + 0.35);
