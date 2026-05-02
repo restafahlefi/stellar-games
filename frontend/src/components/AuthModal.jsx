@@ -15,6 +15,7 @@ export default function AuthModal({ onSuccess, onAdminSuccess }) {
   const [loading, setLoading] = useState(false);
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
   const [showAdminOption, setShowAdminOption] = useState(false);
+  const [isAdminMode, setIsAdminMode] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -56,20 +57,23 @@ export default function AuthModal({ onSuccess, onAdminSuccess }) {
         setConfirmPassword('');
         
         // Tidak memanggil onSuccess() - user harus login manual
-      } else {
-        const result = await authService.login(username, password);
+      } else if (isAdminMode) {
+        // ADMIN LOGIN MODE
+        const isValid = await adminService.testAuth(username, password);
         
-        // Check if user is admin
-        const isAdmin = username === 'admin' || username === 'adminresta' || result.user.role === 'admin';
-        
-        if (isAdmin) {
-          // Show admin option
-          setShowAdminOption(true);
-          setError('✅ Admin detected! Choose login type:');
+        if (isValid) {
+          // Setup admin credentials dan buka admin panel
+          adminService.setCredentials(username, password);
+          if (onAdminSuccess) {
+            onAdminSuccess(username);
+          }
         } else {
-          // Regular user login
-          onSuccess(result.user.username);
+          throw new Error('Invalid admin credentials');
         }
+      } else {
+        // REGULAR USER LOGIN
+        const result = await authService.login(username, password);
+        onSuccess(result.user.username);
       }
     } catch (err) {
       setError(err.message || 'Authentication failed');
@@ -111,18 +115,24 @@ export default function AuthModal({ onSuccess, onAdminSuccess }) {
           {/* Icon Header */}
           <div className="flex justify-center mb-4">
             <div className="relative">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/50">
-                <span className="text-2xl sm:text-3xl">{mode === 'register' ? '📝' : '🔐'}</span>
+              <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-xl flex items-center justify-center shadow-lg ${
+                isAdminMode 
+                  ? 'bg-gradient-to-br from-red-600 to-orange-600 shadow-red-900/50' 
+                  : 'bg-gradient-to-br from-blue-600 to-purple-600 shadow-blue-900/50'
+              }`}>
+                <span className="text-2xl sm:text-3xl">
+                  {isAdminMode ? '👑' : mode === 'register' ? '📝' : '🔐'}
+                </span>
               </div>
             </div>
           </div>
 
           {/* Title */}
           <h2 className="text-xl sm:text-2xl font-black mb-2 text-center bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
-            {mode === 'register' ? 'Create Account' : 'Welcome Back'}
+            {isAdminMode ? 'Admin Panel' : mode === 'register' ? 'Create Account' : 'Welcome Back'}
           </h2>
           <p className="text-slate-400 text-xs mb-4 font-bold text-center">
-            {mode === 'register' ? 'Register to save your progress' : 'Login to continue playing'}
+            {isAdminMode ? 'Admin authentication required' : mode === 'register' ? 'Register to save your progress' : 'Login to continue playing'}
           </p>
 
           {/* Error/Success Message */}
@@ -175,7 +185,7 @@ export default function AuthModal({ onSuccess, onAdminSuccess }) {
             </div>
 
             {/* Confirm Password (Register only) */}
-            {mode === 'register' && (
+            {mode === 'register' && !isAdminMode && (
               <div className="relative">
                 <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-lg">
                   🔒
@@ -243,58 +253,115 @@ export default function AuthModal({ onSuccess, onAdminSuccess }) {
               <button 
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 hover:from-blue-500 hover:via-purple-500 hover:to-cyan-500 text-white text-sm font-black rounded-xl transition-all shadow-xl shadow-blue-900/30 relative overflow-hidden group disabled:opacity-50 disabled:cursor-not-allowed"
+                className={`w-full py-3 text-white text-sm font-black rounded-xl transition-all shadow-xl relative overflow-hidden group disabled:opacity-50 disabled:cursor-not-allowed ${
+                  isAdminMode 
+                    ? 'bg-gradient-to-r from-red-600 via-orange-600 to-yellow-600 hover:from-red-500 hover:via-orange-500 hover:to-yellow-500 shadow-red-900/30'
+                    : 'bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 hover:from-blue-500 hover:via-purple-500 hover:to-cyan-500 shadow-blue-900/30'
+                }`}
               >
                 <span className="relative z-10 flex items-center justify-center gap-2">
                   {loading ? (
                     <>
                       <span className="animate-spin">⏳</span>
-                      <span>{mode === 'register' ? 'Creating Account...' : 'Logging In...'}</span>
+                      <span>
+                        {isAdminMode ? 'Authenticating Admin...' : mode === 'register' ? 'Creating Account...' : 'Logging In...'}
+                      </span>
                     </>
                   ) : (
                     <>
-                      <span>{mode === 'register' ? '📝' : '🚀'}</span>
-                      <span>{mode === 'register' ? 'Create Account' : 'Login & Play'}</span>
+                      <span>
+                        {isAdminMode ? '👑' : mode === 'register' ? '📝' : '🚀'}
+                      </span>
+                      <span>
+                        {isAdminMode ? 'Login as Admin' : mode === 'register' ? 'Create Account' : 'Login & Play'}
+                      </span>
                     </>
                   )}
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity ${
+                  isAdminMode 
+                    ? 'bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600'
+                    : 'bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600'
+                }`}></div>
               </button>
             )}
           </form>
 
           {/* Toggle Mode */}
-          <div className="mt-4 text-center">
-            <button
-              onClick={() => {
-                setMode(mode === 'login' ? 'register' : 'login');
-                setError('');
-                setPassword('');
-                setConfirmPassword('');
-                setRegistrationSuccess(false); // Reset registration success state
-              }}
-              className="text-sm text-slate-400 hover:text-blue-400 transition-colors font-bold"
-              disabled={loading}
-            >
-              {mode === 'login' ? (
-                <>Don't have an account? <span className="text-blue-400">Register</span></>
-              ) : (
-                <>Already have an account? <span className="text-blue-400">Login</span></>
-              )}
-            </button>
+          <div className="mt-4 text-center space-y-2">
+            {!isAdminMode ? (
+              <>
+                <button
+                  onClick={() => {
+                    setMode(mode === 'login' ? 'register' : 'login');
+                    setError('');
+                    setPassword('');
+                    setConfirmPassword('');
+                    setRegistrationSuccess(false); // Reset registration success state
+                  }}
+                  className="text-sm text-slate-400 hover:text-blue-400 transition-colors font-bold block"
+                  disabled={loading}
+                >
+                  {mode === 'login' ? (
+                    <>Don't have an account? <span className="text-blue-400">Register</span></>
+                  ) : (
+                    <>Already have an account? <span className="text-blue-400">Login</span></>
+                  )}
+                </button>
+                
+                {/* Admin Access Button */}
+                <button
+                  onClick={() => {
+                    setIsAdminMode(true);
+                    setMode('login');
+                    setError('');
+                    setPassword('');
+                    setUsername('');
+                  }}
+                  className="text-xs text-slate-500 hover:text-red-400 transition-colors font-bold flex items-center justify-center gap-1 mx-auto"
+                  disabled={loading}
+                >
+                  <span>👑</span>
+                  <span>Admin Access</span>
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={() => {
+                  setIsAdminMode(false);
+                  setMode('login');
+                  setError('');
+                  setPassword('');
+                  setUsername('');
+                }}
+                className="text-sm text-slate-400 hover:text-blue-400 transition-colors font-bold"
+                disabled={loading}
+              >
+                ← Back to Player Login
+              </button>
+            )}
           </div>
 
           {/* Info Footer */}
           <div className="mt-4 p-3 bg-blue-500/10 border border-blue-500/20 rounded-xl">
             <div className="flex items-start gap-2">
-              <div className="text-lg">ℹ️</div>
+              <div className="text-lg">
+                {isAdminMode ? '👑' : 'ℹ️'}
+              </div>
               <div>
-                <p className="text-blue-400 text-xs font-bold mb-0.5">
-                  Secure Authentication
+                <p className={`text-xs font-bold mb-0.5 ${isAdminMode ? 'text-red-400' : 'text-blue-400'}`}>
+                  {isAdminMode ? 'Admin Authentication' : 'Secure Authentication'}
                 </p>
-                <p className="text-slate-500 text-[10px] leading-relaxed">
-                  Your password is encrypted and stored securely. Join the <span className="text-emerald-400 font-bold">Global Leaderboard</span>!
-                </p>
+                {isAdminMode ? (
+                  <div className="text-[10px] leading-relaxed text-slate-500 space-y-1">
+                    <div>Default: <span className="text-slate-400 font-mono">admin / stellar2026!</span></div>
+                    <div>Custom: <span className="text-slate-400 font-mono">adminresta / adminresta123</span></div>
+                  </div>
+                ) : (
+                  <p className="text-slate-500 text-[10px] leading-relaxed">
+                    Your password is encrypted and stored securely. Join the <span className="text-emerald-400 font-bold">Global Leaderboard</span>!
+                  </p>
+                )}
               </div>
             </div>
           </div>
