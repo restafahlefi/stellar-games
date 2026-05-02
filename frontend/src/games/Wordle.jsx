@@ -248,7 +248,7 @@ export default function Wordle({ onBack, playerName }) {
   };
 
   return (
-    <div className="game-container flex flex-col items-center h-full animate-fade-in py-4 select-none">
+    <div className="game-container flex flex-col items-center h-full animate-fade-in py-4 pb-32 select-none">
       <div className="w-full flex justify-between items-center mb-8 px-4 max-w-4xl flex-wrap gap-4">
         <button onClick={onBack} className="px-4 py-2 bg-slate-800 text-slate-300 rounded-lg font-bold">← Back</button>
         

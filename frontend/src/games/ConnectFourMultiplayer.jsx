@@ -216,6 +216,9 @@ export default function ConnectFourMultiplayer({ onBack, playerName }) {
 
       let col = -1;
 
+      // Fast board copy helper
+      const copyBoard = (b) => b.map(row => [...row]);
+
       if (aiDifficulty === 'easy') {
         // Easy: 70% random, 30% smart
         if (Math.random() < 0.7) {
@@ -223,7 +226,7 @@ export default function ConnectFourMultiplayer({ onBack, playerName }) {
         } else {
           // Try to win
           for (let c of availableCols) {
-            const testBoard = JSON.parse(JSON.stringify(board));
+            const testBoard = copyBoard(board);
             let r = -1;
             for (let row = 5; row >= 0; row--) {
               if (testBoard[row][c] === null) { r = row; break; }
@@ -242,7 +245,7 @@ export default function ConnectFourMultiplayer({ onBack, playerName }) {
         // Medium: Try to win, then block, then center, then random
         // 1. Try to win
         for (let c of availableCols) {
-          const testBoard = JSON.parse(JSON.stringify(board));
+          const testBoard = copyBoard(board);
           let r = -1;
           for (let row = 5; row >= 0; row--) {
             if (testBoard[row][c] === null) { r = row; break; }
@@ -256,7 +259,7 @@ export default function ConnectFourMultiplayer({ onBack, playerName }) {
         // 2. Try to block
         if (col === -1) {
           for (let c of availableCols) {
-            const testBoard = JSON.parse(JSON.stringify(board));
+            const testBoard = copyBoard(board);
             let r = -1;
             for (let row = 5; row >= 0; row--) {
               if (testBoard[row][c] === null) { r = row; break; }
@@ -281,46 +284,57 @@ export default function ConnectFourMultiplayer({ onBack, playerName }) {
           col = availableCols[Math.floor(Math.random() * availableCols.length)];
         }
       } else if (aiDifficulty === 'hard') {
-        // Hard: Advanced AI with scoring
+        // Hard: Optimized AI with limited depth
         let bestScore = -Infinity;
+        
+        // First check for immediate win
         for (let c of availableCols) {
-          const testBoard = JSON.parse(JSON.stringify(board));
+          const testBoard = copyBoard(board);
           let r = -1;
           for (let row = 5; row >= 0; row--) {
             if (testBoard[row][c] === null) { r = row; break; }
           }
           if (r !== -1) {
             testBoard[r][c] = 2;
-            
-            // Check if winning move
             if (checkWin(testBoard, 2)) {
               col = c;
               break;
             }
-            
-            // Score the position
-            let score = 0;
-            
-            // Center column preference
-            score += (3 - Math.abs(c - 3)) * 3;
-            
-            // Check if blocking opponent's win
-            testBoard[r][c] = 1;
-            if (checkWin(testBoard, 1)) {
-              score += 100;
+          }
+        }
+        
+        // If no immediate win, check for blocks and scoring
+        if (col === -1) {
+          for (let c of availableCols) {
+            const testBoard = copyBoard(board);
+            let r = -1;
+            for (let row = 5; row >= 0; row--) {
+              if (testBoard[row][c] === null) { r = row; break; }
             }
-            testBoard[r][c] = 2;
-            
-            if (score > bestScore) {
-              bestScore = score;
-              col = c;
+            if (r !== -1) {
+              let score = 0;
+              
+              // Center column preference
+              score += (3 - Math.abs(c - 3)) * 3;
+              
+              // Check if blocking opponent's win
+              testBoard[r][c] = 1;
+              if (checkWin(testBoard, 1)) {
+                score += 100;
+              }
+              
+              if (score > bestScore) {
+                bestScore = score;
+                col = c;
+              }
             }
           }
         }
         
-        // Fallback to random if no move found
+        // Fallback to center if no move found
         if (col === -1) {
-          col = availableCols[Math.floor(Math.random() * availableCols.length)];
+          const centerCols = [3, 2, 4].filter(c => availableCols.includes(c));
+          col = centerCols.length > 0 ? centerCols[0] : availableCols[0];
         }
       } else {
         // Fallback: random
@@ -333,8 +347,8 @@ export default function ConnectFourMultiplayer({ onBack, playerName }) {
       setIsAiTurn(false);
     };
 
-    // Add delay for AI thinking animation with timeout protection
-    const aiTimeout = setTimeout(makeAiMove, 150); // Quick AI: 150ms - feels natural and responsive
+    // Reduced delay for faster response
+    const aiTimeout = setTimeout(makeAiMove, 100); // 100ms - faster response
     
     return () => {
       clearTimeout(aiTimeout);

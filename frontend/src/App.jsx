@@ -461,53 +461,25 @@ function App() {
                     }
                   }, 100);
                 }} 
-                className="w-full py-3 bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 hover:from-blue-500 hover:via-purple-500 hover:to-cyan-500 text-white text-sm font-black rounded-xl transition-all shadow-xl shadow-blue-900/30 mb-2 relative overflow-hidden group"
+                className="w-full py-3 bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 hover:from-blue-500 hover:via-purple-500 hover:to-cyan-500 text-white text-sm font-black rounded-xl transition-all shadow-xl shadow-blue-900/30 relative overflow-hidden group"
               >
                 <span className="relative z-10 flex items-center justify-center gap-2">
                   <span>🚀</span>
-                  <span>Start Playing</span>
+                  <span>Register & Start Playing</span>
                 </span>
                 <div className="absolute inset-0 bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               </button>
 
-              <button 
-                onClick={() => {
-                  const guestName = `Guest_${Date.now().toString().slice(-6)}`;
-                  setPlayerName(guestName);
-                  sessionStorage.setItem('stellar_playerName', guestName);
-                  setShowNameModal(false);
-                  setIsLoading(true); // Start loading screen after modal closes
-                  
-                  // Initialize persistent storage for guest
-                  // Each guest gets their own fresh achievements and challenges
-                  achievementService.setCurrentPlayer(guestName);
-                  rewardSystem.setCurrentPlayer(guestName);
-                  
-                  // Change indicator to green
-                  setTimeout(() => {
-                    const indicator = document.getElementById('status-indicator');
-                    if (indicator) {
-                      indicator.classList.remove('bg-slate-500');
-                      indicator.classList.add('bg-emerald-500', 'animate-ping');
-                    }
-                  }, 100);
-                }} 
-                className="w-full py-2.5 bg-slate-800/80 backdrop-blur-sm hover:bg-slate-700 border border-slate-700 text-slate-300 text-sm font-bold rounded-xl transition-all hover:scale-105 flex items-center justify-center gap-2"
-              >
-                <span>👻</span>
-                <span>Continue as Guest</span>
-              </button>
-
               {/* Info Footer - Compact */}
-              <div className="mt-4 p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl">
+              <div className="mt-4 p-3 bg-blue-500/10 border border-blue-500/20 rounded-xl">
                 <div className="flex items-start gap-2">
-                  <div className="text-lg">✅</div>
+                  <div className="text-lg">ℹ️</div>
                   <div>
-                    <p className="text-emerald-400 text-xs font-bold mb-0.5">
-                      Guest & Registered Players
+                    <p className="text-blue-400 text-xs font-bold mb-0.5">
+                      Registration Required
                     </p>
                     <p className="text-slate-500 text-[10px] leading-relaxed">
-                      Semua pemain otomatis masuk ke <span className="text-emerald-400 font-bold">Global Leaderboard</span> dan <span className="text-amber-400 font-bold">Top Server</span> secara real-time!
+                      Masukkan username untuk bergabung ke <span className="text-emerald-400 font-bold">Global Leaderboard</span> dan simpan progress Anda!
                     </p>
                   </div>
                 </div>
