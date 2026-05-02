@@ -6,7 +6,7 @@ import { authService } from '../services/authService';
  * Handles user authentication
  */
 export default function AuthModal({ onSuccess }) {
-  const [mode, setMode] = useState('login'); // 'login' or 'register'
+  const [mode, setMode] = useState('login'); // Default to 'login' (not 'register')
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');

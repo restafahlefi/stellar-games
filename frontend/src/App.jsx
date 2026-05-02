@@ -8,6 +8,7 @@ import AchievementButton from './components/AchievementButton';
 import DailyChallengeButton from './components/DailyChallengeButton';
 import PlayerProfile from './components/PlayerProfile';
 import AuthModal from './components/AuthModal';
+import TokenExpiryIndicator from './components/TokenExpiryIndicator';
 import { useRealTimeStats } from './components/RealTimeStats';
 import RealTimeCountdown from './components/RealTimeCountdown';
 import { GAMES } from './data/gamesData';
@@ -260,6 +261,9 @@ function App() {
               
               {/* Daily Challenge Button - Always visible */}
               <DailyChallengeButton />
+              
+              {/* Token Expiry Indicator */}
+              {isAuthenticated && <TokenExpiryIndicator />}
               
               {/* Username Button with Logout */}
               <button onClick={() => {
