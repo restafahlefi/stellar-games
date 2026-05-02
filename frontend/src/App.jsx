@@ -277,30 +277,30 @@ function App() {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="stats-card bg-slate-900/40 p-4 sm:p-5 rounded-2xl border border-slate-800 shadow-xl relative">
-                <span className="text-slate-500 text-[9px] sm:text-[10px] font-black uppercase tracking-widest">Total Players</span>
+                <span className="text-slate-500 text-[10px] sm:text-xs font-black uppercase tracking-widest">Total Players</span>
                 <p className="text-2xl sm:text-3xl font-black mt-2 tracking-tighter">{stats.totalPlayers || 0}</p>
-                <span className="text-slate-600 text-[8px] sm:text-[9px] font-bold mt-1 block">Semua pemain terdaftar</span>
+                <span className="text-slate-600 text-[10px] sm:text-xs font-bold mt-1 block">Semua pemain terdaftar</span>
                 {/* Real-time indicator */}
                 <div className="absolute top-3 right-3">
                   <span className={`inline-block w-2 h-2 rounded-full transition-all duration-300 ${getIndicatorColor()}`}></span>
                 </div>
               </div>
               <div className="stats-card bg-slate-900/40 p-4 sm:p-5 rounded-2xl border border-slate-800 shadow-xl relative overflow-hidden">
-                <span className="text-slate-500 text-[9px] sm:text-[10px] font-black uppercase tracking-widest">Players Online</span>
+                <span className="text-slate-500 text-[10px] sm:text-xs font-black uppercase tracking-widest">Players Online</span>
                 <p className="text-2xl sm:text-3xl font-black mt-2 text-emerald-400 tracking-tighter flex items-center gap-2">
                   <span className="inline-block w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
                   {stats.activePlayers || 0}
                 </p>
-                <span className="text-slate-600 text-[8px] sm:text-[9px] font-bold mt-1 block">Sedang aktif sekarang</span>
+                <span className="text-slate-600 text-[10px] sm:text-xs font-bold mt-1 block">Sedang aktif sekarang</span>
                 {/* Real-time indicator */}
                 <div className="absolute top-3 right-3">
                   <span className={`inline-block w-2 h-2 rounded-full transition-all duration-300 ${getIndicatorColor()}`}></span>
                 </div>
               </div>
               <div className="stats-card bg-slate-900/40 p-4 sm:p-5 rounded-2xl border border-slate-800 shadow-xl relative">
-                <span className="text-slate-500 text-[9px] sm:text-[10px] font-black uppercase tracking-widest">System Status</span>
+                <span className="text-slate-500 text-[10px] sm:text-xs font-black uppercase tracking-widest">System Status</span>
                 <p className="text-2xl sm:text-3xl font-black mt-2 text-emerald-500 tracking-tighter">ONLINE</p>
-                <span className="text-slate-600 text-[8px] sm:text-[9px] font-bold mt-1 block">Server berjalan normal</span>
+                <span className="text-slate-600 text-[10px] sm:text-xs font-bold mt-1 block">Server berjalan normal</span>
                 {/* Real-time indicator */}
                 <div className="absolute top-3 right-3">
                   <span className={`inline-block w-2 h-2 rounded-full transition-all duration-300 ${getIndicatorColor()}`}></span>
@@ -316,21 +316,21 @@ function App() {
             </div>
             
             {/* Indicator Legend - Compact */}
-            <div className="flex items-center gap-3 text-[10px]">
+            <div className="flex items-center gap-3 text-xs">
               <div className="flex items-center gap-1">
-                <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                <span className="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
                 <span className="text-slate-500">Normal</span>
               </div>
               <div className="flex items-center gap-1">
-                <span className="inline-block w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                <span className="inline-block w-2 h-2 rounded-full bg-amber-500"></span>
                 <span className="text-slate-500">Warning</span>
               </div>
               <div className="flex items-center gap-1">
-                <span className="inline-block w-1.5 h-1.5 rounded-full bg-red-500"></span>
+                <span className="inline-block w-2 h-2 rounded-full bg-red-500"></span>
                 <span className="text-slate-500">Soon</span>
               </div>
               <div className="flex items-center gap-1">
-                <span className="inline-block w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                <span className="inline-block w-2 h-2 rounded-full bg-blue-500"></span>
                 <span className="text-slate-500">Updating</span>
               </div>
             </div>
@@ -363,7 +363,7 @@ function App() {
               <span>🎮</span>
               <span>All Games</span>
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {GAMES.map(game => (
                 <button 
                   key={game.id} 
@@ -392,7 +392,7 @@ function App() {
           </div>
 
           {/* Modal Card - Smaller & More Compact */}
-          <div className="relative bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 border-2 border-slate-700/50 rounded-3xl p-6 max-w-sm w-full shadow-2xl shadow-blue-900/20 animate-scale-in">
+          <div className="relative bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 border-2 border-slate-700/50 rounded-3xl p-4 sm:p-6 max-w-[90vw] sm:max-w-sm w-full shadow-2xl shadow-blue-900/20 animate-scale-in">
             {/* Glow Effect */}
             <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 rounded-3xl opacity-20 blur-xl animate-pulse"></div>
             
@@ -401,16 +401,16 @@ function App() {
               {/* Icon Header - Smaller */}
               <div className="flex justify-center mb-4">
                 <div className="relative">
-                  <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/50 animate-bounce-slow">
-                    <span className="text-3xl">👤</span>
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/50 animate-bounce-slow">
+                    <span className="text-2xl sm:text-3xl">👤</span>
                   </div>
                   {/* Status Indicator - Will change color */}
-                  <div id="status-indicator" className="absolute -top-1 -right-1 w-5 h-5 bg-slate-500 rounded-full border-4 border-slate-900 transition-all duration-500"></div>
+                  <div id="status-indicator" className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-slate-500 rounded-full border-2 sm:border-4 border-slate-900 transition-all duration-500"></div>
                 </div>
               </div>
 
               {/* Title - Smaller */}
-              <h2 className="text-2xl font-black mb-2 text-center bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent animate-gradient">
+              <h2 className="text-xl sm:text-2xl font-black mb-2 text-center bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent animate-gradient">
                 Identify Yourself
               </h2>
               <p className="text-slate-400 text-xs mb-4 font-bold text-center">
