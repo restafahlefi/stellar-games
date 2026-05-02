@@ -25,14 +25,20 @@ class SocketService {
         return;
       }
       
-      const serverUrl = import.meta.env.VITE_API_URL?.replace('/api/v1', '') || 'http://localhost:5000';
+      // Socket.IO URL Configuration
+      // In production (Railway), use same domain (no URL needed, Socket.IO auto-detects)
+      // In development, use localhost
+      const serverUrl = import.meta.env.VITE_API_URL?.replace('/api/v1', '') || 
+                        (import.meta.env.MODE === 'production' ? undefined : 'http://localhost:5000');
+      
+      console.log('🔌 Connecting to Socket.IO server:', serverUrl || 'same domain (production)');
       
       this.socket = io(serverUrl, {
         transports: ['websocket', 'polling'], // Try WebSocket first (faster)
         reconnection: true,
         reconnectionDelay: 500, // Faster reconnection
-        reconnectionAttempts: 3,
-        timeout: 5000, // Connection timeout
+        reconnectionAttempts: 5, // More attempts
+        timeout: 10000, // Longer timeout for Railway
         forceNew: false, // Reuse existing connection
         upgrade: true, // Allow transport upgrade
         rememberUpgrade: true // Remember successful upgrade
@@ -61,9 +67,10 @@ class SocketService {
       // Timeout fallback
       setTimeout(() => {
         if (!this.connected) {
-          reject(new Error('Connection timeout'));
+          console.error('🔴 Socket.IO connection timeout');
+          reject(new Error('Connection timeout - server tidak merespons'));
         }
-      }, 5000);
+      }, 10000); // 10 seconds timeout
     });
   }
 
