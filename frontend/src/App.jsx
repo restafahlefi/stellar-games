@@ -227,8 +227,8 @@ function App() {
       {/* LOADING SCREEN - Full screen overlay */}
       {isLoading && <LoadingScreen key={loadingKey} onFinished={() => setIsLoading(false)} />}
       
-      {/* MAIN CONTENT - Only render after auth check */}
-      {!isCheckingAuth && !isLoading && (
+      {/* MAIN CONTENT - Only render if authenticated and not checking */}
+      {!isCheckingAuth && !isLoading && isAuthenticated && (
         <>
           {/* BACKGROUND LAYERS */}
           {/* Layer 1: Anime GIF Background */}
