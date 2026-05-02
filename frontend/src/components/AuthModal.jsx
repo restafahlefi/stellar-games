@@ -42,9 +42,14 @@ export default function AuthModal({ onSuccess }) {
 
     try {
       if (mode === 'register') {
-        const result = await authService.register(username, password);
-        // After successful registration, auto-login (no need to login manually)
-        onSuccess(result.user.username);
+        await authService.register(username, password);
+        // After successful registration, switch to login mode with success message
+        setMode('login');
+        setError('');
+        setPassword('');
+        setConfirmPassword('');
+        // Show success notification (not alert, just error state with green color)
+        setError('✅ Registration successful! Please login with your credentials.');
       } else {
         const result = await authService.login(username, password);
         onSuccess(result.user.username);
@@ -58,20 +63,20 @@ export default function AuthModal({ onSuccess }) {
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 animate-fade-in">
-      {/* Video Background */}
+      {/* Video Background - Brighter & Less Blur */}
       <video
         autoPlay
         loop
         muted
         playsInline
         className="absolute inset-0 w-full h-full object-cover"
-        style={{ filter: 'brightness(0.4)' }}
+        style={{ filter: 'brightness(0.6)' }}
       >
         <source src="/86462-593059278.mp4" type="video/mp4" />
       </video>
 
-      {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-slate-950/60 backdrop-blur-sm"></div>
+      {/* Dark Overlay - Lighter */}
+      <div className="absolute inset-0 bg-slate-950/40"></div>
 
       {/* Animated Background Particles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -103,10 +108,16 @@ export default function AuthModal({ onSuccess }) {
             {mode === 'register' ? 'Register to save your progress' : 'Login to continue playing'}
           </p>
 
-          {/* Error Message */}
+          {/* Error/Success Message */}
           {error && (
-            <div className="mb-4 p-3 bg-rose-500/10 border border-rose-500/20 rounded-xl">
-              <p className="text-rose-400 text-xs font-bold text-center">{error}</p>
+            <div className={`mb-4 p-3 rounded-xl ${
+              error.startsWith('✅') 
+                ? 'bg-emerald-500/10 border border-emerald-500/20' 
+                : 'bg-rose-500/10 border border-rose-500/20'
+            }`}>
+              <p className={`text-xs font-bold text-center ${
+                error.startsWith('✅') ? 'text-emerald-400' : 'text-rose-400'
+              }`}>{error}</p>
             </div>
           )}
 
