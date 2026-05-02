@@ -406,8 +406,8 @@ function App() {
             achievementService.setCurrentPlayer(username);
             rewardSystem.setCurrentPlayer(username);
             
-            // Hide loading after a moment
-            setTimeout(() => setIsLoading(false), 1000);
+            // Loading screen will auto-finish when progress reaches 100%
+            // No need for setTimeout - let LoadingScreen control its own lifecycle
           }}
         />
       )}
