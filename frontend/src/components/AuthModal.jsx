@@ -1,0 +1,216 @@
+import { useState } from 'react';
+import { authService } from '../services/authService';
+
+/**
+ * Auth Modal - Registration & Login
+ * Handles user authentication
+ */
+export default function AuthModal({ onSuccess }) {
+  const [mode, setMode] = useState('login'); // 'login' or 'register'
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+
+    // Validation
+    if (!username || !password) {
+      setError('Username and password are required');
+      return;
+    }
+
+    if (username.length < 3 || username.length > 15) {
+      setError('Username must be 3-15 characters');
+      return;
+    }
+
+    if (password.length < 8) {
+      setError('Password must be at least 8 characters');
+      return;
+    }
+
+    if (mode === 'register' && password !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      if (mode === 'register') {
+        await authService.register(username, password);
+        // After successful registration, switch to login
+        setMode('login');
+        setError('');
+        setPassword('');
+        setConfirmPassword('');
+        alert('✅ Registration successful! Please login.');
+      } else {
+        const result = await authService.login(username, password);
+        onSuccess(result.user.username);
+      }
+    } catch (err) {
+      setError(err.message || 'Authentication failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/95 backdrop-blur-xl animate-fade-in">
+      {/* Animated Background Particles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1s'}}></div>
+      </div>
+
+      {/* Modal Card */}
+      <div className="relative bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 border-2 border-slate-700/50 rounded-3xl p-4 sm:p-6 max-w-[90vw] sm:max-w-md w-full shadow-2xl shadow-blue-900/20 animate-scale-in">
+        {/* Glow Effect */}
+        <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 rounded-3xl opacity-20 blur-xl animate-pulse"></div>
+        
+        {/* Content */}
+        <div className="relative">
+          {/* Icon Header */}
+          <div className="flex justify-center mb-4">
+            <div className="relative">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/50">
+                <span className="text-2xl sm:text-3xl">{mode === 'register' ? '📝' : '🔐'}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Title */}
+          <h2 className="text-xl sm:text-2xl font-black mb-2 text-center bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+            {mode === 'register' ? 'Create Account' : 'Welcome Back'}
+          </h2>
+          <p className="text-slate-400 text-xs mb-4 font-bold text-center">
+            {mode === 'register' ? 'Register to save your progress' : 'Login to continue playing'}
+          </p>
+
+          {/* Error Message */}
+          {error && (
+            <div className="mb-4 p-3 bg-rose-500/10 border border-rose-500/20 rounded-xl">
+              <p className="text-rose-400 text-xs font-bold text-center">{error}</p>
+            </div>
+          )}
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-3">
+            {/* Username */}
+            <div className="relative">
+              <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-lg">
+                👤
+              </div>
+              <input 
+                type="text" 
+                value={username} 
+                onChange={(e) => setUsername(e.target.value.substring(0, 15))} 
+                placeholder="Username (3-15 chars)" 
+                className="w-full bg-slate-950/80 backdrop-blur-sm border-2 border-slate-700 rounded-xl pl-12 pr-12 py-3 text-white text-sm placeholder-slate-600 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 outline-none font-bold transition-all" 
+                autoFocus
+                disabled={loading}
+              />
+              <div className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-slate-600 font-bold">
+                {username.length}/15
+              </div>
+            </div>
+
+            {/* Password */}
+            <div className="relative">
+              <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-lg">
+                🔒
+              </div>
+              <input 
+                type="password" 
+                value={password} 
+                onChange={(e) => setPassword(e.target.value)} 
+                placeholder="Password (min 8 chars)" 
+                className="w-full bg-slate-950/80 backdrop-blur-sm border-2 border-slate-700 rounded-xl pl-12 pr-4 py-3 text-white text-sm placeholder-slate-600 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 outline-none font-bold transition-all" 
+                disabled={loading}
+              />
+            </div>
+
+            {/* Confirm Password (Register only) */}
+            {mode === 'register' && (
+              <div className="relative">
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-lg">
+                  🔒
+                </div>
+                <input 
+                  type="password" 
+                  value={confirmPassword} 
+                  onChange={(e) => setConfirmPassword(e.target.value)} 
+                  placeholder="Confirm Password" 
+                  className="w-full bg-slate-950/80 backdrop-blur-sm border-2 border-slate-700 rounded-xl pl-12 pr-4 py-3 text-white text-sm placeholder-slate-600 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 outline-none font-bold transition-all" 
+                  disabled={loading}
+                />
+              </div>
+            )}
+
+            {/* Submit Button */}
+            <button 
+              type="submit"
+              disabled={loading}
+              className="w-full py-3 bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 hover:from-blue-500 hover:via-purple-500 hover:to-cyan-500 text-white text-sm font-black rounded-xl transition-all shadow-xl shadow-blue-900/30 relative overflow-hidden group disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <span className="relative z-10 flex items-center justify-center gap-2">
+                {loading ? (
+                  <>
+                    <span className="animate-spin">⏳</span>
+                    <span>{mode === 'register' ? 'Creating Account...' : 'Logging In...'}</span>
+                  </>
+                ) : (
+                  <>
+                    <span>{mode === 'register' ? '📝' : '🚀'}</span>
+                    <span>{mode === 'register' ? 'Create Account' : 'Login & Play'}</span>
+                  </>
+                )}
+              </span>
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            </button>
+          </form>
+
+          {/* Toggle Mode */}
+          <div className="mt-4 text-center">
+            <button
+              onClick={() => {
+                setMode(mode === 'login' ? 'register' : 'login');
+                setError('');
+                setPassword('');
+                setConfirmPassword('');
+              }}
+              className="text-sm text-slate-400 hover:text-blue-400 transition-colors font-bold"
+              disabled={loading}
+            >
+              {mode === 'login' ? (
+                <>Don't have an account? <span className="text-blue-400">Register</span></>
+              ) : (
+                <>Already have an account? <span className="text-blue-400">Login</span></>
+              )}
+            </button>
+          </div>
+
+          {/* Info Footer */}
+          <div className="mt-4 p-3 bg-blue-500/10 border border-blue-500/20 rounded-xl">
+            <div className="flex items-start gap-2">
+              <div className="text-lg">ℹ️</div>
+              <div>
+                <p className="text-blue-400 text-xs font-bold mb-0.5">
+                  Secure Authentication
+                </p>
+                <p className="text-slate-500 text-[10px] leading-relaxed">
+                  Your password is encrypted and stored securely. Join the <span className="text-emerald-400 font-bold">Global Leaderboard</span>!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

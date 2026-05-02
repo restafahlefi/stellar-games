@@ -7,6 +7,7 @@ import VolumeControl from './components/VolumeControl';
 import AchievementButton from './components/AchievementButton';
 import DailyChallengeButton from './components/DailyChallengeButton';
 import PlayerProfile from './components/PlayerProfile';
+import AuthModal from './components/AuthModal';
 import { useRealTimeStats } from './components/RealTimeStats';
 import RealTimeCountdown from './components/RealTimeCountdown';
 import { GAMES } from './data/gamesData';
@@ -15,6 +16,7 @@ import { leaderboardService } from './services/leaderboardService';
 import { playerService } from './services/playerService';
 import { achievementService } from './services/achievementService';
 import { rewardSystem } from './services/rewardSystem';
+import { authService } from './services/authService';
 import './index.css';
 
 // Direct imports (no lazy loading to avoid loading screen)
@@ -47,29 +49,36 @@ const GameComponents = {
 };
 
 function App() {
-  const [isLoading, setIsLoading] = useState(false); // Start false - no loading initially
+  const [isLoading, setIsLoading] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
   const [showGuide, setShowGuide] = useState(false);
   const [activeGameId, setActiveGameId] = useState(null);
-  
-  // Force loading screen to show on every page load (not just HMR)
   const [loadingKey] = useState(() => Date.now());
   
-  // Generate unique tab ID for this session
-  const [tabId] = useState(() => `tab_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
-  
-  // Use sessionStorage for per-tab player name
-  const [playerName, setPlayerName] = useState(() => {
-    // Check sessionStorage first (per-tab)
-    const sessionName = sessionStorage.getItem('stellar_playerName');
-    if (sessionName) return sessionName;
-    
-    // Fallback to localStorage (shared across tabs) - but we'll override this
-    return '';
-  });
-  
-  const [showNameModal, setShowNameModal] = useState(!sessionStorage.getItem('stellar_playerName'));
-  const [tempName, setTempName] = useState(playerName);
+  // Auth state
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [playerName, setPlayerName] = useState('');
+  const [showAuthModal, setShowAuthModal] = useState(false);
+
+  // Check authentication on mount
+  useEffect(() => {
+    const checkAuth = async () => {
+      const user = await authService.verifyToken();
+      if (user) {
+        setIsAuthenticated(true);
+        setPlayerName(user.username);
+        sessionStorage.setItem('stellar_playerName', user.username);
+        
+        // Initialize services
+        achievementService.setCurrentPlayer(user.username);
+        rewardSystem.setCurrentPlayer(user.username);
+      } else {
+        setShowAuthModal(true);
+      }
+    };
+
+    checkAuth();
+  }, []);
 
   // Use RealTimeStats hook untuk synchronized updates
   // PAUSED saat bermain game untuk menghindari lag
@@ -254,20 +263,18 @@ function App() {
               
               {/* Username Button with Logout */}
               <button onClick={() => {
-                // Clear session and show modal again
-                sessionStorage.removeItem('stellar_playerName');
-                
-                // Clear current user context and reset achievements/challenges
+                // Logout
+                authService.logout();
                 achievementService.setCurrentPlayer(null);
                 rewardSystem.setCurrentPlayer(null);
-                
-                setPlayerName(''); // This will trigger useEffect cleanup to stop heartbeat
-                setShowNameModal(true);
-              }} className="bg-slate-900 px-3 sm:px-4 py-2 rounded-xl border border-slate-800 text-xs sm:text-sm font-bold hover:border-blue-500/50 transition-all flex items-center gap-2">
-                {/* Status Indicator - Green when online, Red when offline */}
+                setPlayerName('');
+                setIsAuthenticated(false);
+                setShowAuthModal(true);
+              }} className="bg-slate-900 px-3 sm:px-4 py-2 rounded-xl border border-slate-800 text-xs sm:text-sm font-bold hover:border-red-500/50 transition-all flex items-center gap-2">
+                {/* Status Indicator */}
                 <span className={`w-2 h-2 rounded-full transition-all duration-500 ${playerName ? 'bg-emerald-500 animate-pulse' : 'bg-red-500'}`}></span>
                 <span className="text-slate-400 truncate max-w-[80px] sm:max-w-none">{playerName || 'Guest'}</span>
-                <span className="text-slate-500 text-xs">🚪</span>
+                <span className="text-red-400 text-xs hover:scale-110 transition-transform">🚪</span>
               </button>
             </div>
           </div>
@@ -386,107 +393,23 @@ function App() {
         </>
       )}
 
-      {showNameModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/95 backdrop-blur-xl animate-fade-in">
-          {/* Animated Background Particles - Smaller */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute top-1/4 left-1/4 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
-            <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1s'}}></div>
-          </div>
-
-          {/* Modal Card - Smaller & More Compact */}
-          <div className="relative bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 border-2 border-slate-700/50 rounded-3xl p-4 sm:p-6 max-w-[90vw] sm:max-w-sm w-full shadow-2xl shadow-blue-900/20 animate-scale-in">
-            {/* Glow Effect */}
-            <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 rounded-3xl opacity-20 blur-xl animate-pulse"></div>
+      {/* Auth Modal - Registration & Login */}
+      {showAuthModal && (
+        <AuthModal 
+          onSuccess={(username) => {
+            setPlayerName(username);
+            setIsAuthenticated(true);
+            setShowAuthModal(false);
+            setIsLoading(true);
             
-            {/* Content */}
-            <div className="relative">
-              {/* Icon Header - Smaller */}
-              <div className="flex justify-center mb-4">
-                <div className="relative">
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/50 animate-bounce-slow">
-                    <span className="text-2xl sm:text-3xl">👤</span>
-                  </div>
-                  {/* Status Indicator - Will change color */}
-                  <div id="status-indicator" className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-slate-500 rounded-full border-2 sm:border-4 border-slate-900 transition-all duration-500"></div>
-                </div>
-              </div>
-
-              {/* Title - Smaller */}
-              <h2 className="text-xl sm:text-2xl font-black mb-2 text-center bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent animate-gradient">
-                Identify Yourself
-              </h2>
-              <p className="text-slate-400 text-xs mb-4 font-bold text-center">
-                Bergabunglah dengan komunitas global gamers
-              </p>
-
-              {/* Input with Icon - Compact */}
-              <div className="relative mb-3">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-lg">
-                  ✨
-                </div>
-                <input 
-                  type="text" 
-                  value={tempName} 
-                  onChange={(e) => setTempName(e.target.value.substring(0, 15))} 
-                  placeholder="Enter username..." 
-                  className="w-full bg-slate-950/80 backdrop-blur-sm border-2 border-slate-700 rounded-xl pl-12 pr-12 py-3 text-white text-sm placeholder-slate-600 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 outline-none font-bold transition-all" 
-                  autoFocus
-                />
-                <div className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-slate-600 font-bold">
-                  {tempName.length}/15
-                </div>
-              </div>
-
-              {/* Buttons - Compact */}
-              <button 
-                onClick={() => {
-                  const final = tempName.trim() || `Guest_${Date.now().toString().slice(-6)}`;
-                  setPlayerName(final);
-                  sessionStorage.setItem('stellar_playerName', final);
-                  setShowNameModal(false);
-                  setIsLoading(true); // Start loading screen after modal closes
-                  
-                  // Initialize persistent storage for new player
-                  // This will load their specific achievements and challenges
-                  achievementService.setCurrentPlayer(final);
-                  rewardSystem.setCurrentPlayer(final);
-                  
-                  // Change indicator to green
-                  setTimeout(() => {
-                    const indicator = document.getElementById('status-indicator');
-                    if (indicator) {
-                      indicator.classList.remove('bg-slate-500');
-                      indicator.classList.add('bg-emerald-500', 'animate-ping');
-                    }
-                  }, 100);
-                }} 
-                className="w-full py-3 bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 hover:from-blue-500 hover:via-purple-500 hover:to-cyan-500 text-white text-sm font-black rounded-xl transition-all shadow-xl shadow-blue-900/30 relative overflow-hidden group"
-              >
-                <span className="relative z-10 flex items-center justify-center gap-2">
-                  <span>🚀</span>
-                  <span>Register & Start Playing</span>
-                </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              </button>
-
-              {/* Info Footer - Compact */}
-              <div className="mt-4 p-3 bg-blue-500/10 border border-blue-500/20 rounded-xl">
-                <div className="flex items-start gap-2">
-                  <div className="text-lg">ℹ️</div>
-                  <div>
-                    <p className="text-blue-400 text-xs font-bold mb-0.5">
-                      Registration Required
-                    </p>
-                    <p className="text-slate-500 text-[10px] leading-relaxed">
-                      Masukkan username untuk bergabung ke <span className="text-emerald-400 font-bold">Global Leaderboard</span> dan simpan progress Anda!
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+            // Initialize services
+            achievementService.setCurrentPlayer(username);
+            rewardSystem.setCurrentPlayer(username);
+            
+            // Hide loading after a moment
+            setTimeout(() => setIsLoading(false), 1000);
+          }}
+        />
       )}
     </div>
   );
