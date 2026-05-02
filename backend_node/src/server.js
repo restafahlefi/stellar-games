@@ -61,9 +61,13 @@ app.use('/api/v1/players', require('./interfaces/http/routes/playerRoutes'));
 app.use('/api/v1/leaderboard', require('./interfaces/http/routes/leaderboardRoutes'));
 
 // Serve frontend static files (PRODUCTION ONLY)
-if (process.env.NODE_ENV === 'production') {
+// Check if running in production or on Railway
+const isProduction = process.env.NODE_ENV === 'production' || process.env.RAILWAY_ENVIRONMENT;
+
+if (isProduction) {
   const frontendPath = path.join(__dirname, '../frontend/dist');
   
+  console.log('🌐 Production mode detected');
   console.log('🌐 Serving frontend from:', frontendPath);
   
   // Serve static files with caching
@@ -89,6 +93,8 @@ if (process.env.NODE_ENV === 'production') {
   });
   
   console.log('✅ Frontend static files configured');
+} else {
+  console.log('🔧 Development mode - frontend not served from backend');
 }
 
 // Error handling middleware
