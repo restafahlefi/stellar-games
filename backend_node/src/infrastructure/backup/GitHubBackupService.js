@@ -46,10 +46,6 @@ class GitHubBackupService {
       // Initialize git
       this.git = simpleGit(this.repoPath);
 
-      // Configure git user
-      await this.git.addConfig('user.name', this.githubUsername);
-      await this.git.addConfig('user.email', this.githubEmail);
-
       // Check if .git exists
       const gitDir = path.join(this.repoPath, '.git');
       let gitExists = false;
@@ -63,6 +59,10 @@ class GitHubBackupService {
       if (!gitExists) {
         console.log('📦 Initializing new git repository...');
         await this.git.init();
+        
+        // Configure git user AFTER init
+        await this.git.addConfig('user.name', this.githubUsername);
+        await this.git.addConfig('user.email', this.githubEmail);
         
         // Add remote with authentication token
         const authenticatedUrl = this.githubRepoUrl.replace(
@@ -81,6 +81,10 @@ class GitHubBackupService {
         }
       } else {
         console.log('📂 Git repository already exists');
+        
+        // Configure git user for existing repo
+        await this.git.addConfig('user.name', this.githubUsername);
+        await this.git.addConfig('user.email', this.githubEmail);
         
         // Update remote URL with token (in case it changed)
         try {
