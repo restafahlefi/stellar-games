@@ -5,14 +5,54 @@
 
 class AdminBypassService {
   constructor() {
-    // Auto-detect API URL (same as authService)
-    this.apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
+    // PERBAIKAN: API URL detection untuk Railway
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      // Development
+      this.apiUrl = 'http://localhost:5000/api/v1';
+    } else {
+      // Production (Railway) - gunakan relative path
+      this.apiUrl = '/api/v1';
+    }
+    
     this.baseUrl = this.apiUrl.replace('/api/v1', '');
     this.adminKey = null;
     this.username = null;
     
     console.log('🚨 Admin Bypass Service initialized (EMERGENCY)');
     console.log('🔗 API URL:', this.apiUrl);
+    console.log('🌐 Hostname:', window.location.hostname);
+  }
+
+  /**
+   * Test API connection
+   * @returns {Promise<boolean>}
+   */
+  async testConnection() {
+    try {
+      console.log('🧪 Testing API connection...');
+      
+      // Test basic health endpoint first
+      const healthUrl = `${this.baseUrl}/health`;
+      console.log('🌐 Testing health URL:', healthUrl);
+      
+      const response = await fetch(healthUrl, {
+        method: 'GET'
+      });
+      
+      console.log('📡 Health response status:', response.status);
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log('✅ API connection successful:', data);
+        return true;
+      }
+      
+      console.log('❌ API connection failed');
+      return false;
+    } catch (error) {
+      console.error('❌ API connection test failed:', error);
+      return false;
+    }
   }
 
   /**
@@ -23,12 +63,27 @@ class AdminBypassService {
    */
   async login(username, password) {
     try {
-      const response = await fetch(`${this.apiUrl}/admin-bypass/login?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`, {
-        method: 'GET'
+      console.log('🔄 Attempting admin bypass login...');
+      console.log('📍 API URL:', this.apiUrl);
+      console.log('👤 Username:', username);
+      
+      const url = `${this.apiUrl}/admin-bypass/login?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
+      console.log('🌐 Full URL:', url);
+      
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
+
+      console.log('📡 Response status:', response.status);
+      console.log('📡 Response ok:', response.ok);
 
       if (response.ok) {
         const data = await response.json();
+        console.log('📦 Response data:', data);
+        
         if (data.success) {
           this.adminKey = data.adminKey;
           this.username = data.username;
@@ -37,13 +92,20 @@ class AdminBypassService {
           localStorage.setItem('stellar_admin_key', this.adminKey);
           localStorage.setItem('stellar_admin_username', this.username);
           
+          console.log('✅ Admin login successful!');
           return true;
         }
       }
       
+      console.log('❌ Admin login failed - invalid response');
       return false;
     } catch (error) {
       console.error('❌ Admin bypass login failed:', error);
+      console.error('❌ Error details:', {
+        message: error.message,
+        stack: error.stack,
+        name: error.name
+      });
       return false;
     }
   }

@@ -60,10 +60,19 @@ export default function AuthModal({ onSuccess, onAdminSuccess }) {
         // Tidak memanggil onSuccess() - user harus login manual
       } else if (isAdminMode) {
         // ADMIN LOGIN MODE - BYPASS AUTHENTICATION
+        console.log('🔄 Starting admin bypass login...');
+        
+        // Test connection first
+        const connectionOk = await adminBypassService.testConnection();
+        if (!connectionOk) {
+          throw new Error('Cannot connect to admin API. Please check your connection.');
+        }
+        
         const isValid = await adminBypassService.login(username, password);
         
         if (isValid) {
           // Admin login berhasil
+          console.log('✅ Admin bypass login successful!');
           if (onAdminSuccess) {
             onAdminSuccess(username);
           }

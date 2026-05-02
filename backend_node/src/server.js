@@ -53,6 +53,9 @@ app.get('/debug/routes', (req, res) => {
     routes.push({ path: '/api/v1/auth/login', methods: ['POST'] });
     routes.push({ path: '/api/v1/auth/verify', methods: ['GET'] });
     routes.push({ path: '/api/v1/auth/logout', methods: ['POST'] });
+    routes.push({ path: '/api/v1/admin-bypass/login', methods: ['GET'] });
+    routes.push({ path: '/api/v1/admin-bypass/stats', methods: ['GET'] });
+    routes.push({ path: '/api/v1/admin-bypass/users', methods: ['GET'] });
     
     res.json({ 
       status: 'success',

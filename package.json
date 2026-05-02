@@ -6,7 +6,8 @@
     "build": "cd frontend && npm ci && npm run build",
     "install-backend": "cd backend_node && npm ci",
     "start": "cd backend_node && node src/index.js",
-    "postinstall": "npm run build && npm run install-backend"
+    "postinstall": "npm run build && npm run install-backend",
+    "deploy": "node deploy.js"
   },
   "engines": {
     "node": ">=18.0.0",
