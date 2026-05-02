@@ -320,41 +320,41 @@ export default function Game2048({ onBack, playerName }) {
       </div>
       {/* Touch Controls - Swipe Buttons for Mobile */}
       <div className="mt-8 flex flex-col items-center gap-4">
-        <div className="grid grid-cols-3 gap-2 w-48 h-48 bg-slate-800/50 rounded-3xl p-4 border border-slate-700">
+        <div className="grid grid-cols-3 gap-3 w-56 h-56 bg-slate-800/50 rounded-3xl p-4 border border-slate-700">
           {/* Up */}
           <div className="col-start-2"></div>
           <button
-            onClick={() => handleKeyPress({ key: 'ArrowUp' })}
+            onClick={() => handleKeyDown({ key: 'ArrowUp' })}
             onTouchStart={(e) => {
               e.preventDefault();
-              handleKeyPress({ key: 'ArrowUp' });
+              handleKeyDown({ key: 'ArrowUp' });
             }}
-            className="col-start-2 bg-slate-700 hover:bg-slate-600 active:bg-orange-500 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600"
+            className="col-start-2 bg-slate-700 hover:bg-slate-600 active:bg-orange-500 rounded-2xl flex items-center justify-center text-4xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600 h-full"
           >
             ↑
           </button>
           
           {/* Left, Center, Right */}
           <button
-            onClick={() => handleKeyPress({ key: 'ArrowLeft' })}
+            onClick={() => handleKeyDown({ key: 'ArrowLeft' })}
             onTouchStart={(e) => {
               e.preventDefault();
-              handleKeyPress({ key: 'ArrowLeft' });
+              handleKeyDown({ key: 'ArrowLeft' });
             }}
-            className="bg-slate-700 hover:bg-slate-600 active:bg-orange-500 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600"
+            className="bg-slate-700 hover:bg-slate-600 active:bg-orange-500 rounded-2xl flex items-center justify-center text-4xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600 h-full"
           >
             ←
           </button>
-          <div className="bg-slate-900/50 rounded-2xl flex items-center justify-center text-2xl">
+          <div className="bg-slate-900/50 rounded-2xl flex items-center justify-center text-2xl font-black text-orange-400 h-full">
             2048
           </div>
           <button
-            onClick={() => handleKeyPress({ key: 'ArrowRight' })}
+            onClick={() => handleKeyDown({ key: 'ArrowRight' })}
             onTouchStart={(e) => {
               e.preventDefault();
-              handleKeyPress({ key: 'ArrowRight' });
+              handleKeyDown({ key: 'ArrowRight' });
             }}
-            className="bg-slate-700 hover:bg-slate-600 active:bg-orange-500 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600"
+            className="bg-slate-700 hover:bg-slate-600 active:bg-orange-500 rounded-2xl flex items-center justify-center text-4xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600 h-full"
           >
             →
           </button>
@@ -362,12 +362,12 @@ export default function Game2048({ onBack, playerName }) {
           {/* Down */}
           <div className="col-start-2"></div>
           <button
-            onClick={() => handleKeyPress({ key: 'ArrowDown' })}
+            onClick={() => handleKeyDown({ key: 'ArrowDown' })}
             onTouchStart={(e) => {
               e.preventDefault();
-              handleKeyPress({ key: 'ArrowDown' });
+              handleKeyDown({ key: 'ArrowDown' });
             }}
-            className="col-start-2 bg-slate-700 hover:bg-slate-600 active:bg-orange-500 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600"
+            className="col-start-2 bg-slate-700 hover:bg-slate-600 active:bg-orange-500 rounded-2xl flex items-center justify-center text-4xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600 h-full"
           >
             ↓
           </button>

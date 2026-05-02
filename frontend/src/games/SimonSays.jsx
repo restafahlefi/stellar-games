@@ -86,6 +86,9 @@ export default function SimonSays({ onBack, playerName }) {
 
   useEffect(() => {
     if (isPlaying && sequence.length > 0 && !isPlayerTurn) {
+      // Resume audio context on sequence playback
+      resumeAudio();
+      
       let i = 0;
       const interval = setInterval(() => {
         const color = sequence[i];

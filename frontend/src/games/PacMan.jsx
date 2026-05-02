@@ -958,10 +958,18 @@ export default function PacMan({ onBack, playerName }) {
 
       {/* Touch Controls - Virtual D-Pad for Mobile */}
       <div className="mt-6 flex flex-col items-center gap-4">
-        <div className="grid grid-cols-3 gap-2 w-48 h-48 bg-slate-800/50 rounded-3xl p-4 border border-slate-700">
+        <div className="grid grid-cols-3 gap-3 w-56 h-56 bg-slate-800/50 rounded-3xl p-4 border border-slate-700">
           {/* Up */}
           <div className="col-start-2"></div>
           <button
+            onClick={() => {
+              pacmanRef.current.nextDirection = DIRECTIONS.UP;
+              if (!gameStarted && !showIntermission) {
+                setGameStarted(true);
+                totalDotsRef.current = countDots(mazeRef.current);
+                dotsRemainingRef.current = totalDotsRef.current;
+              }
+            }}
             onTouchStart={(e) => {
               e.preventDefault();
               pacmanRef.current.nextDirection = DIRECTIONS.UP;
@@ -971,13 +979,21 @@ export default function PacMan({ onBack, playerName }) {
                 dotsRemainingRef.current = totalDotsRef.current;
               }
             }}
-            className="col-start-2 bg-slate-700 hover:bg-slate-600 active:bg-indigo-500 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600"
+            className="col-start-2 bg-slate-700 hover:bg-slate-600 active:bg-indigo-500 rounded-2xl flex items-center justify-center text-4xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600 h-full"
           >
             ↑
           </button>
           
           {/* Left, Center, Right */}
           <button
+            onClick={() => {
+              pacmanRef.current.nextDirection = DIRECTIONS.LEFT;
+              if (!gameStarted && !showIntermission) {
+                setGameStarted(true);
+                totalDotsRef.current = countDots(mazeRef.current);
+                dotsRemainingRef.current = totalDotsRef.current;
+              }
+            }}
             onTouchStart={(e) => {
               e.preventDefault();
               pacmanRef.current.nextDirection = DIRECTIONS.LEFT;
@@ -987,14 +1003,22 @@ export default function PacMan({ onBack, playerName }) {
                 dotsRemainingRef.current = totalDotsRef.current;
               }
             }}
-            className="bg-slate-700 hover:bg-slate-600 active:bg-indigo-500 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600"
+            className="bg-slate-700 hover:bg-slate-600 active:bg-indigo-500 rounded-2xl flex items-center justify-center text-4xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600 h-full"
           >
             ←
           </button>
-          <div className="bg-slate-900/50 rounded-2xl flex items-center justify-center text-4xl">
+          <div className="bg-slate-900/50 rounded-2xl flex items-center justify-center text-4xl h-full">
             ⚫
           </div>
           <button
+            onClick={() => {
+              pacmanRef.current.nextDirection = DIRECTIONS.RIGHT;
+              if (!gameStarted && !showIntermission) {
+                setGameStarted(true);
+                totalDotsRef.current = countDots(mazeRef.current);
+                dotsRemainingRef.current = totalDotsRef.current;
+              }
+            }}
             onTouchStart={(e) => {
               e.preventDefault();
               pacmanRef.current.nextDirection = DIRECTIONS.RIGHT;
@@ -1004,7 +1028,7 @@ export default function PacMan({ onBack, playerName }) {
                 dotsRemainingRef.current = totalDotsRef.current;
               }
             }}
-            className="bg-slate-700 hover:bg-slate-600 active:bg-indigo-500 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600"
+            className="bg-slate-700 hover:bg-slate-600 active:bg-indigo-500 rounded-2xl flex items-center justify-center text-4xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600 h-full"
           >
             →
           </button>
@@ -1012,6 +1036,14 @@ export default function PacMan({ onBack, playerName }) {
           {/* Down */}
           <div className="col-start-2"></div>
           <button
+            onClick={() => {
+              pacmanRef.current.nextDirection = DIRECTIONS.DOWN;
+              if (!gameStarted && !showIntermission) {
+                setGameStarted(true);
+                totalDotsRef.current = countDots(mazeRef.current);
+                dotsRemainingRef.current = totalDotsRef.current;
+              }
+            }}
             onTouchStart={(e) => {
               e.preventDefault();
               pacmanRef.current.nextDirection = DIRECTIONS.DOWN;
@@ -1021,7 +1053,7 @@ export default function PacMan({ onBack, playerName }) {
                 dotsRemainingRef.current = totalDotsRef.current;
               }
             }}
-            className="col-start-2 bg-slate-700 hover:bg-slate-600 active:bg-indigo-500 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600"
+            className="col-start-2 bg-slate-700 hover:bg-slate-600 active:bg-indigo-500 rounded-2xl flex items-center justify-center text-4xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600 h-full"
           >
             ↓
           </button>

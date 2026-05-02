@@ -387,13 +387,21 @@ export default function Minesweeper({ onBack, playerName }) {
         <div className="flex gap-3 bg-slate-800/50 p-3 rounded-2xl border border-slate-700">
           <button
             onClick={() => setTouchMode('reveal')}
-            className={`px-6 py-3 rounded-xl font-bold text-sm transition-all ${touchMode === 'reveal' ? 'bg-emerald-500 text-white shadow-lg' : 'bg-slate-700 text-slate-400'}`}
+            onTouchStart={(e) => {
+              e.preventDefault();
+              setTouchMode('reveal');
+            }}
+            className={`px-8 py-4 rounded-xl font-bold text-base transition-all ${touchMode === 'reveal' ? 'bg-emerald-500 text-white shadow-lg scale-105' : 'bg-slate-700 text-slate-400 hover:bg-slate-600'}`}
           >
             👆 REVEAL
           </button>
           <button
             onClick={() => setTouchMode('flag')}
-            className={`px-6 py-3 rounded-xl font-bold text-sm transition-all ${touchMode === 'flag' ? 'bg-rose-500 text-white shadow-lg' : 'bg-slate-700 text-slate-400'}`}
+            onTouchStart={(e) => {
+              e.preventDefault();
+              setTouchMode('flag');
+            }}
+            className={`px-8 py-4 rounded-xl font-bold text-base transition-all ${touchMode === 'flag' ? 'bg-rose-500 text-white shadow-lg scale-105' : 'bg-slate-700 text-slate-400 hover:bg-slate-600'}`}
           >
             🚩 FLAG
           </button>
@@ -401,7 +409,7 @@ export default function Minesweeper({ onBack, playerName }) {
         
         <p className="text-slate-400 text-center text-sm font-medium bg-slate-800/50 px-6 py-3 rounded-full border border-slate-700">
           Desktop: <kbd className="bg-slate-700 px-2 py-1 rounded mx-1 text-slate-200">Left Click</kbd> reveal, <kbd className="bg-slate-700 px-2 py-1 rounded mx-1 text-slate-200">Right Click</kbd> flag<br/>
-          Mobile: Toggle mode then tap cell
+          Mobile: <span className="text-emerald-400 font-bold">Select mode</span> then <span className="text-rose-400 font-bold">tap cells</span>
         </p>
       </div>
 
