@@ -12,6 +12,29 @@
     overflow-x: hidden;
     background-color: var(--color-bg-dark);
     cursor: default;
+    /* Mobile touch optimization */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    /* Prevent zoom on double tap */
+    touch-action: manipulation;
+  }
+  
+  /* Improve button touch targets for mobile */
+  button, .clickable {
+    min-height: 44px; /* iOS recommended touch target */
+    min-width: 44px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* Game cards touch optimization */
+  .game-card {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(59, 130, 246, 0.3);
   }
 }
 
@@ -25,7 +48,7 @@
 
 /* ===== ANIMATED BACKGROUND WITH GIF SUPPORT ===== */
 
-/* Background Layer with Anime GIF - ULTRA BRIGHT */
+/* Background Layer with Anime GIF - ULTRA BRIGHT & RESPONSIVE */
 .anime-bg {
   position: fixed;
   inset: 0;
@@ -40,6 +63,25 @@
   will-change: auto;
   transform: translateZ(0);
   backface-visibility: hidden;
+}
+
+/* Mobile responsive background */
+@media (max-width: 768px) {
+  .anime-bg {
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+}
+
+/* Tablet responsive background */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .anime-bg {
+    background-size: cover;
+    background-position: center center;
+  }
 }
 
 /* Fallback jika GIF tidak ada - gunakan gradient */
@@ -362,4 +404,74 @@ button, input {
 
 button:active {
   transform: scale(0.95);
+}
+
+/* ===== MOBILE OPTIMIZATIONS ===== */
+
+/* Fix mobile viewport issues */
+@media screen and (max-width: 768px) {
+  /* Prevent horizontal scroll */
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
+  }
+  
+  /* Fix background on mobile */
+  .anime-bg {
+    background-attachment: scroll; /* Better performance on mobile */
+    background-size: cover;
+    background-position: center center;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+  
+  /* Improve touch targets */
+  button {
+    min-height: 48px;
+    min-width: 48px;
+  }
+  
+  /* Game cards mobile optimization */
+  .game-card {
+    padding: 1rem !important;
+    min-height: 160px !important;
+  }
+  
+  /* Stats cards mobile */
+  .stats-card {
+    padding: 1.5rem !important;
+  }
+}
+
+/* Tablet optimizations */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  .game-card {
+    min-height: 180px;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  /* This targets touch devices */
+  .game-card:hover {
+    transform: none;
+  }
+  
+  .game-card:active {
+    transform: scale(0.95);
+    background-color: rgba(15, 23, 42, 0.8) !important;
+  }
+  
+  /* Remove hover effects on touch devices */
+  .group:hover .group-hover\:scale-110 {
+    transform: none;
+  }
+}
+
+/* Fix iOS Safari viewport */
+@supports (-webkit-touch-callout: none) {
+  .anime-bg {
+    min-height: -webkit-fill-available;
+  }
 }

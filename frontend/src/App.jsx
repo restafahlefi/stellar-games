@@ -39,7 +39,7 @@ const GameComponents = {
   game2048: Game2048,
   memory: MemoryMatch,
   rps: RockPaperScissorsMultiplayer,
-  simonsays: SimonSays,
+  simon: SimonSays, // Fixed: was 'simonsays', now 'simon' to match gamesData
   typing: TypingTest,
   connect4: ConnectFourMultiplayer,
   minesweeper: Minesweeper,
@@ -218,32 +218,32 @@ function App() {
           </div>
 
           {/* STATS CARDS dengan Real-time Indicators */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            <div className="bg-slate-900/40 p-8 rounded-[2rem] border border-slate-800 shadow-xl relative">
-              <span className="text-slate-500 text-[10px] font-black uppercase tracking-widest">Total Players</span>
-              <p className="text-5xl font-black mt-2 tracking-tighter">{stats.totalPlayers || 0}</p>
-              <span className="text-slate-600 text-[9px] font-bold mt-1 block">Semua pemain terdaftar</span>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-6">
+            <div className="stats-card bg-slate-900/40 p-4 sm:p-6 md:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-slate-800 shadow-xl relative">
+              <span className="text-slate-500 text-[9px] sm:text-[10px] font-black uppercase tracking-widest">Total Players</span>
+              <p className="text-3xl sm:text-4xl md:text-5xl font-black mt-2 tracking-tighter">{stats.totalPlayers || 0}</p>
+              <span className="text-slate-600 text-[8px] sm:text-[9px] font-bold mt-1 block">Semua pemain terdaftar</span>
               {/* Real-time indicator with 3-color system */}
               <div className="absolute top-3 right-3">
                 <span className={`inline-block w-2 h-2 rounded-full transition-all duration-300 ${getIndicatorColor()}`}></span>
               </div>
             </div>
-            <div className="bg-slate-900/40 p-8 rounded-[2rem] border border-slate-800 shadow-xl relative overflow-hidden">
-              <span className="text-slate-500 text-[10px] font-black uppercase tracking-widest">Players Online</span>
-              <p className="text-5xl font-black mt-2 text-emerald-400 tracking-tighter flex items-center gap-2">
-                <span className="inline-block w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></span>
+            <div className="stats-card bg-slate-900/40 p-4 sm:p-6 md:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-slate-800 shadow-xl relative overflow-hidden">
+              <span className="text-slate-500 text-[9px] sm:text-[10px] font-black uppercase tracking-widest">Players Online</span>
+              <p className="text-3xl sm:text-4xl md:text-5xl font-black mt-2 text-emerald-400 tracking-tighter flex items-center gap-2">
+                <span className="inline-block w-2 sm:w-3 h-2 sm:h-3 bg-emerald-500 rounded-full animate-pulse"></span>
                 {stats.activePlayers || 0}
               </p>
-              <span className="text-slate-600 text-[9px] font-bold mt-1 block">Sedang aktif sekarang</span>
+              <span className="text-slate-600 text-[8px] sm:text-[9px] font-bold mt-1 block">Sedang aktif sekarang</span>
               {/* Real-time indicator with 3-color system */}
               <div className="absolute top-3 right-3">
                 <span className={`inline-block w-2 h-2 rounded-full transition-all duration-300 ${getIndicatorColor()}`}></span>
               </div>
             </div>
-            <div className="bg-slate-900/40 p-8 rounded-[2rem] border border-slate-800 shadow-xl relative">
-              <span className="text-slate-500 text-[10px] font-black uppercase tracking-widest">System Status</span>
-              <p className="text-5xl font-black mt-2 text-emerald-500 tracking-tighter">ONLINE</p>
-              <span className="text-slate-600 text-[9px] font-bold mt-1 block">Server berjalan normal</span>
+            <div className="stats-card bg-slate-900/40 p-4 sm:p-6 md:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-slate-800 shadow-xl relative">
+              <span className="text-slate-500 text-[9px] sm:text-[10px] font-black uppercase tracking-widest">System Status</span>
+              <p className="text-3xl sm:text-4xl md:text-5xl font-black mt-2 text-emerald-500 tracking-tighter">ONLINE</p>
+              <span className="text-slate-600 text-[8px] sm:text-[9px] font-bold mt-1 block">Server berjalan normal</span>
               {/* Real-time indicator with 3-color system */}
               <div className="absolute top-3 right-3">
                 <span className={`inline-block w-2 h-2 rounded-full transition-all duration-300 ${getIndicatorColor()}`}></span>
@@ -298,9 +298,14 @@ function App() {
           {/* GAMES GRID */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {GAMES.map(game => (
-              <button key={game.id} onClick={() => handleGameLaunch(game.id)} className="group bg-slate-900/30 p-8 rounded-[2.5rem] border border-slate-800/50 hover:border-blue-500/50 transition-all hover:bg-slate-900/60 text-left">
-                <div className="text-5xl mb-6 group-hover:scale-110 transition-transform">{game.icon?.[0] || '🎮'}</div>
-                <h3 className="text-2xl font-black mb-2">{game.name}</h3>
+              <button 
+                key={game.id} 
+                onClick={() => handleGameLaunch(game.id)} 
+                className="game-card group bg-slate-900/30 p-6 sm:p-8 rounded-[2.5rem] border border-slate-800/50 hover:border-blue-500/50 transition-all hover:bg-slate-900/60 text-left active:scale-95 active:bg-slate-900/80 min-h-[180px] sm:min-h-[200px]"
+                style={{ touchAction: 'manipulation' }}
+              >
+                <div className="text-4xl sm:text-5xl mb-4 sm:mb-6 group-hover:scale-110 transition-transform">{game.icon?.[0] || '🎮'}</div>
+                <h3 className="text-xl sm:text-2xl font-black mb-2">{game.name}</h3>
                 <p className="text-slate-500 text-xs font-bold leading-relaxed">{game.desc}</p>
               </button>
             ))}
