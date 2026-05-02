@@ -113,7 +113,7 @@ const ConnectFour = ({ onBack, playerName }) => {
           } else setCurrentPlayer(1);
           setIsAiTurn(false);
         }
-      }, 300); // Reduced from 800ms to 300ms for faster AI response
+      }, 150); // Quick AI: 150ms - feels natural and responsive
     }
   }, [isAiTurn, winner, board]);
 
