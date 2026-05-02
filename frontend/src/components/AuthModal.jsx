@@ -42,13 +42,9 @@ export default function AuthModal({ onSuccess }) {
 
     try {
       if (mode === 'register') {
-        await authService.register(username, password);
-        // After successful registration, switch to login
-        setMode('login');
-        setError('');
-        setPassword('');
-        setConfirmPassword('');
-        alert('✅ Registration successful! Please login.');
+        const result = await authService.register(username, password);
+        // After successful registration, auto-login (no need to login manually)
+        onSuccess(result.user.username);
       } else {
         const result = await authService.login(username, password);
         onSuccess(result.user.username);

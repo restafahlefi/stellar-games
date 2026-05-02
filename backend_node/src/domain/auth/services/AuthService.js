@@ -9,7 +9,7 @@ class AuthService {
   constructor(authRepository) {
     this.authRepository = authRepository;
     this.JWT_SECRET = process.env.JWT_SECRET || 'stellar-games-secret-key-2026';
-    this.JWT_EXPIRY = '7d'; // 7 days
+    this.JWT_EXPIRY = '30d'; // 30 days (extended for better UX)
   }
 
   /**
