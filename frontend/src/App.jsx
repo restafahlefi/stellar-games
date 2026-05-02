@@ -118,10 +118,11 @@ function App() {
     checkAuth();
   }, []);
 
-  // Admin panel keyboard shortcut (Ctrl+Shift+A)
+  // Admin panel keyboard shortcut (HANYA untuk admin yang sudah login)
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+      // Hanya aktif jika user adalah admin
+      if ((playerName === 'admin' || playerName === 'adminresta') && e.ctrlKey && e.shiftKey && e.key === 'A') {
         e.preventDefault();
         setShowAdminPanel(true);
       }
@@ -129,7 +130,7 @@ function App() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [playerName]); // Depend on playerName
 
   // Use RealTimeStats hook untuk synchronized updates
   // PAUSED saat bermain game untuk menghindari lag
@@ -343,14 +344,16 @@ function App() {
             </div>
           </div>
 
-          {/* Admin Panel Hint - Subtle */}
-          <div className="mb-4 text-center">
-            <div className="inline-flex items-center gap-2 bg-slate-900/30 px-3 py-1 rounded-full border border-slate-800/50 text-xs">
-              <span className="text-slate-500">👑</span>
-              <span className="text-slate-500">Admin Panel:</span>
-              <kbd className="bg-slate-800 px-2 py-0.5 rounded text-slate-400 font-mono text-[10px]">Ctrl+Shift+A</kbd>
+          {/* Admin Panel Hint - HANYA untuk admin yang sudah login */}
+          {playerName && (playerName === 'admin' || playerName === 'adminresta') && (
+            <div className="mb-4 text-center">
+              <div className="inline-flex items-center gap-2 bg-red-900/30 px-3 py-1 rounded-full border border-red-800/50 text-xs">
+                <span className="text-red-400">👑</span>
+                <span className="text-red-400">Admin Panel:</span>
+                <kbd className="bg-red-800 px-2 py-0.5 rounded text-red-300 font-mono text-[10px]">Ctrl+Shift+A</kbd>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* STATS CARDS dengan Real-time Indicators - COMPACT */}
           <div className="mb-8">
@@ -481,6 +484,17 @@ function App() {
             
             // Loading screen will auto-finish when progress reaches 100%
             // No need for setTimeout - let LoadingScreen control its own lifecycle
+          }}
+          onAdminSuccess={(username) => {
+            // Admin login - langsung buka admin panel
+            setPlayerName(username);
+            setIsAuthenticated(true);
+            setShowAuthModal(false);
+            setShowAdminPanel(true); // Langsung buka admin panel
+            
+            // Initialize services
+            achievementService.setCurrentPlayer(username);
+            rewardSystem.setCurrentPlayer(username);
           }}
         />
       )}

@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { authService } from '../services/authService';
+import { adminService } from '../services/adminService';
 
 /**
  * Auth Modal - Registration & Login
- * Handles user authentication
+ * Handles user authentication with integrated admin detection
  */
-export default function AuthModal({ onSuccess }) {
+export default function AuthModal({ onSuccess, onAdminSuccess }) {
   const [mode, setMode] = useState('login'); // Default to 'login' (not 'register')
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -13,6 +14,7 @@ export default function AuthModal({ onSuccess }) {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
+  const [showAdminOption, setShowAdminOption] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -56,7 +58,18 @@ export default function AuthModal({ onSuccess }) {
         // Tidak memanggil onSuccess() - user harus login manual
       } else {
         const result = await authService.login(username, password);
-        onSuccess(result.user.username);
+        
+        // Check if user is admin
+        const isAdmin = username === 'admin' || username === 'adminresta' || result.user.role === 'admin';
+        
+        if (isAdmin) {
+          // Show admin option
+          setShowAdminOption(true);
+          setError('✅ Admin detected! Choose login type:');
+        } else {
+          // Regular user login
+          onSuccess(result.user.username);
+        }
       }
     } catch (err) {
       setError(err.message || 'Authentication failed');
@@ -178,27 +191,76 @@ export default function AuthModal({ onSuccess }) {
               </div>
             )}
 
-            {/* Submit Button */}
-            <button 
-              type="submit"
-              disabled={loading}
-              className="w-full py-3 bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 hover:from-blue-500 hover:via-purple-500 hover:to-cyan-500 text-white text-sm font-black rounded-xl transition-all shadow-xl shadow-blue-900/30 relative overflow-hidden group disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <span className="relative z-10 flex items-center justify-center gap-2">
-                {loading ? (
-                  <>
-                    <span className="animate-spin">⏳</span>
-                    <span>{mode === 'register' ? 'Creating Account...' : 'Logging In...'}</span>
-                  </>
-                ) : (
-                  <>
-                    <span>{mode === 'register' ? '📝' : '🚀'}</span>
-                    <span>{mode === 'register' ? 'Create Account' : 'Login & Play'}</span>
-                  </>
-                )}
-              </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-            </button>
+            {/* Submit Button atau Admin Options */}
+            {showAdminOption ? (
+              // Admin Options - Muncul setelah admin login berhasil
+              <div className="space-y-3">
+                <div className="text-center text-sm text-emerald-400 font-bold mb-4">
+                  👑 Admin Access Detected
+                </div>
+                
+                <button
+                  onClick={() => {
+                    // Login sebagai user biasa
+                    onSuccess(username);
+                  }}
+                  className="w-full py-3 bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 hover:from-blue-500 hover:via-purple-500 hover:to-cyan-500 text-white text-sm font-black rounded-xl transition-all shadow-xl shadow-blue-900/30 relative overflow-hidden group"
+                >
+                  <span className="relative z-10 flex items-center justify-center gap-2">
+                    <span>🎮</span>
+                    <span>Login as Player</span>
+                  </span>
+                </button>
+                
+                <button
+                  onClick={async () => {
+                    // Setup admin credentials dan buka admin panel
+                    adminService.setCredentials(username, password);
+                    if (onAdminSuccess) {
+                      onAdminSuccess(username);
+                    }
+                  }}
+                  className="w-full py-3 bg-gradient-to-r from-red-600 via-orange-600 to-yellow-600 hover:from-red-500 hover:via-orange-500 hover:to-yellow-500 text-white text-sm font-black rounded-xl transition-all shadow-xl shadow-red-900/30 relative overflow-hidden group"
+                >
+                  <span className="relative z-10 flex items-center justify-center gap-2">
+                    <span>👑</span>
+                    <span>Open Admin Panel</span>
+                  </span>
+                </button>
+                
+                <button
+                  onClick={() => {
+                    setShowAdminOption(false);
+                    setError('');
+                  }}
+                  className="w-full py-2 text-slate-400 hover:text-white text-sm font-bold transition-colors"
+                >
+                  ← Back to Login
+                </button>
+              </div>
+            ) : (
+              // Regular Submit Button
+              <button 
+                type="submit"
+                disabled={loading}
+                className="w-full py-3 bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 hover:from-blue-500 hover:via-purple-500 hover:to-cyan-500 text-white text-sm font-black rounded-xl transition-all shadow-xl shadow-blue-900/30 relative overflow-hidden group disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <span className="relative z-10 flex items-center justify-center gap-2">
+                  {loading ? (
+                    <>
+                      <span className="animate-spin">⏳</span>
+                      <span>{mode === 'register' ? 'Creating Account...' : 'Logging In...'}</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>{mode === 'register' ? '📝' : '🚀'}</span>
+                      <span>{mode === 'register' ? 'Create Account' : 'Login & Play'}</span>
+                    </>
+                  )}
+                </span>
+                <div className="absolute inset-0 bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              </button>
+            )}
           </form>
 
           {/* Toggle Mode */}
