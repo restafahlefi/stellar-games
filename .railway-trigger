@@ -1,0 +1,8 @@
+# Railway Deployment Trigger
+# This file is used to force Railway to detect changes
+# Timestamp: 2026-05-02 17:00:00
+
+DEPLOYMENT_VERSION=2.0.0
+LAST_UPDATE=2026-05-02
+BUILD_TYPE=DOCKER
+STATUS=READY

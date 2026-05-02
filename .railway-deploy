@@ -1,0 +1,15 @@
+# Railway Deployment Trigger
+# Timestamp: 2026-05-02 17:30:00
+# This file forces Railway to detect new deployment
+
+DEPLOYMENT_ID=railway-docker-fix
+TIMESTAMP=2026-05-02T17:30:00Z
+BUILD_TYPE=DOCKER
+COMMIT_MESSAGE=Fix Railway deployment with Docker
+STATUS=PENDING_DEPLOYMENT
+
+# Changes in this deployment:
+# - Added Dockerfile (multi-stage build)
+# - Added .dockerignore
+# - Updated railway.toml (use Docker)
+# - Fixed npm not found error
