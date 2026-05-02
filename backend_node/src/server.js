@@ -62,7 +62,9 @@ app.use('/api/v1/leaderboard', require('./interfaces/http/routes/leaderboardRout
 
 // Serve frontend static files (PRODUCTION ONLY)
 if (process.env.NODE_ENV === 'production') {
-  const frontendPath = path.join(__dirname, '../../frontend/dist');
+  const frontendPath = path.join(__dirname, '../frontend/dist');
+  
+  console.log('🌐 Serving frontend from:', frontendPath);
   
   // Serve static files with caching
   app.use(express.static(frontendPath, {
@@ -80,10 +82,13 @@ if (process.env.NODE_ENV === 'production') {
     // Serve index.html for all other routes (SPA routing)
     res.sendFile(path.join(frontendPath, 'index.html'), (err) => {
       if (err) {
+        console.error('❌ Error serving index.html:', err);
         next(err);
       }
     });
   });
+  
+  console.log('✅ Frontend static files configured');
 }
 
 // Error handling middleware
