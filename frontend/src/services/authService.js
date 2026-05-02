@@ -46,9 +46,9 @@ class AuthService {
         throw new Error(data.error || 'Registration failed');
       }
 
-      // Save token and user
-      this.saveAuth(data.data.token, data.data.user);
-
+      // PERBAIKAN: TIDAK menyimpan token saat registrasi
+      // Backend tidak mengirim token, user harus login manual
+      // Hanya return user data untuk konfirmasi registrasi berhasil
       return data.data;
     } catch (error) {
       throw error;

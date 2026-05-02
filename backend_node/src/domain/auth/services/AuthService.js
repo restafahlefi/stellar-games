@@ -19,7 +19,7 @@ class AuthService {
    * Register a new user
    * @param {string} username
    * @param {string} password
-   * @returns {Promise<{user, token}>}
+   * @returns {Promise<{user}>} - TIDAK mengirim token, user harus login manual
    */
   async register(username, password) {
     // Validate username
@@ -47,12 +47,11 @@ class AuthService {
       passwordHash
     });
 
-    // Generate token
-    const token = this.generateToken(user);
-
+    // PERBAIKAN: TIDAK generate token saat registrasi
+    // User harus login manual setelah registrasi
     return {
-      user: user.toSafeJSON(),
-      token
+      user: user.toSafeJSON()
+      // token: DIHAPUS!
     };
   }
 
