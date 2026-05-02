@@ -40,6 +40,30 @@ app.get('/health', (req, res) => {
   });
 });
 
+// Debug endpoint - list all registered routes
+app.get('/debug/routes', (req, res) => {
+  const routes = [];
+  app._router.stack.forEach((middleware) => {
+    if (middleware.route) {
+      routes.push({
+        path: middleware.route.path,
+        methods: Object.keys(middleware.route.methods)
+      });
+    } else if (middleware.name === 'router') {
+      middleware.handle.stack.forEach((handler) => {
+        if (handler.route) {
+          const path = middleware.regexp.source.replace('\\/?(?=\\/|$)', '').replace(/\\\//g, '/');
+          routes.push({
+            path: path + handler.route.path,
+            methods: Object.keys(handler.route.methods)
+          });
+        }
+      });
+    }
+  });
+  res.json({ routes });
+});
+
 // Leaderboard reset info endpoint
 app.get('/api/v1/leaderboard/reset-info', (req, res) => {
   const resetInfo = leaderboardScheduler.getResetInfo();
@@ -56,11 +80,18 @@ app.post('/api/v1/admin/leaderboard/reset', async (req, res) => {
 });
 
 // API Routes
+console.log('📍 Registering API routes...');
 app.use('/api/v1/games', require('./interfaces/http/routes/gameRoutes'));
+console.log('✅ Games routes registered');
 app.use('/api/v1/players', require('./interfaces/http/routes/playerRoutes'));
+console.log('✅ Players routes registered');
 app.use('/api/v1/leaderboard', require('./interfaces/http/routes/leaderboardRoutes'));
+console.log('✅ Leaderboard routes registered');
 app.use('/api/v1/auth', require('./interfaces/http/routes/authRoutes')(container.authController));
+console.log('✅ Auth routes registered');
 app.use('/api/v1/admin', require('./interfaces/http/routes/adminRoutes')(container));
+console.log('✅ Admin routes registered');
+console.log('🎯 All API routes registered successfully');
 
 // Serve frontend static files (PRODUCTION ONLY)
 // Check if running in production or on Railway
