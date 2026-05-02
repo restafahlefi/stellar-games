@@ -102,14 +102,20 @@ export default function LoadingScreen({ onFinished }) {
   return (
     <div className={`fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden transition-opacity duration-700 ${fadeOut ? 'opacity-0' : 'opacity-100'}`}>
       
-      {/* BACKGROUND LAYERS - Same as homepage */}
-      {/* Layer 1: Anime GIF Background */}
-      <div className="absolute inset-0 z-0">
-        <div className="anime-bg"></div>
-      </div>
-      
-      {/* Layer 2: Dark Overlay - ULTRA MINIMAL (10% only) */}
-      <div className="absolute inset-0 z-0 bg-slate-950/10"></div>
+      {/* Video Background */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover z-0"
+        style={{ filter: 'brightness(0.3)' }}
+      >
+        <source src="/67116-521253275.mp4" type="video/mp4" />
+      </video>
+
+      {/* Dark Overlay */}
+      <div className="absolute inset-0 z-0 bg-slate-950/50"></div>
       
       {/* 1. LAYER: Particles Background */}
       <div className="absolute inset-0 pointer-events-none z-10">
