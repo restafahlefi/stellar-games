@@ -318,9 +318,63 @@ export default function Game2048({ onBack, playerName }) {
           ))}
         </div>
       </div>
+      {/* Touch Controls - Swipe Buttons for Mobile */}
       <div className="mt-8 flex flex-col items-center gap-4">
-        <p className="text-slate-400 text-center font-medium bg-slate-800/50 px-6 py-3 rounded-full border border-slate-700">
-          Tip: Use your keyboard <kbd className="bg-slate-700 px-2 py-1 rounded mx-1 text-slate-200 shadow">Arrows</kbd> to slide the tiles!
+        <div className="grid grid-cols-3 gap-2 w-48 h-48 bg-slate-800/50 rounded-3xl p-4 border border-slate-700">
+          {/* Up */}
+          <div className="col-start-2"></div>
+          <button
+            onClick={() => handleKeyPress({ key: 'ArrowUp' })}
+            onTouchStart={(e) => {
+              e.preventDefault();
+              handleKeyPress({ key: 'ArrowUp' });
+            }}
+            className="col-start-2 bg-slate-700 hover:bg-slate-600 active:bg-orange-500 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600"
+          >
+            ↑
+          </button>
+          
+          {/* Left, Center, Right */}
+          <button
+            onClick={() => handleKeyPress({ key: 'ArrowLeft' })}
+            onTouchStart={(e) => {
+              e.preventDefault();
+              handleKeyPress({ key: 'ArrowLeft' });
+            }}
+            className="bg-slate-700 hover:bg-slate-600 active:bg-orange-500 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600"
+          >
+            ←
+          </button>
+          <div className="bg-slate-900/50 rounded-2xl flex items-center justify-center text-2xl">
+            2048
+          </div>
+          <button
+            onClick={() => handleKeyPress({ key: 'ArrowRight' })}
+            onTouchStart={(e) => {
+              e.preventDefault();
+              handleKeyPress({ key: 'ArrowRight' });
+            }}
+            className="bg-slate-700 hover:bg-slate-600 active:bg-orange-500 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600"
+          >
+            →
+          </button>
+          
+          {/* Down */}
+          <div className="col-start-2"></div>
+          <button
+            onClick={() => handleKeyPress({ key: 'ArrowDown' })}
+            onTouchStart={(e) => {
+              e.preventDefault();
+              handleKeyPress({ key: 'ArrowDown' });
+            }}
+            className="col-start-2 bg-slate-700 hover:bg-slate-600 active:bg-orange-500 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600"
+          >
+            ↓
+          </button>
+        </div>
+        
+        <p className="text-slate-400 text-center text-sm font-medium bg-slate-800/50 px-6 py-3 rounded-full border border-slate-700">
+          Use <kbd className="bg-slate-700 px-2 py-1 rounded mx-1 text-slate-200 shadow">Arrows</kbd> or <span className="text-orange-400 font-bold">Touch Buttons</span>
         </p>
       </div>
 

@@ -103,6 +103,7 @@ export default function Minesweeper({ onBack, playerName }) {
   const timerRef = useRef(null);
   const [isExploding, setIsExploding] = useState(false);
   const [currentAchievement, setCurrentAchievement] = useState(null);
+  const [touchMode, setTouchMode] = useState('reveal'); // 'reveal' or 'flag' for mobile
   
   const { checkAchievements, updateChallenge, updateStats, clearNewAchievements } = useGameProgress('minesweeper');
 
@@ -347,14 +348,28 @@ export default function Minesweeper({ onBack, playerName }) {
             row.map((cell, c) => (
               <div 
                 key={`${r}-${c}`} 
-                onClick={() => revealCell(r, c)}
+                onClick={() => {
+                  if (touchMode === 'reveal') {
+                    revealCell(r, c);
+                  } else {
+                    toggleFlag({ preventDefault: () => {} }, r, c);
+                  }
+                }}
                 onContextMenu={(e) => toggleFlag(e, r, c)}
+                onTouchStart={(e) => {
+                  e.preventDefault();
+                  if (touchMode === 'reveal') {
+                    revealCell(r, c);
+                  } else {
+                    toggleFlag({ preventDefault: () => {} }, r, c);
+                  }
+                }}
                 className={`w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-sm font-black text-lg transition-colors cursor-pointer select-none
                   ${cell.isRevealed 
                     ? cell.isMine 
                       ? 'bg-rose-500 shadow-[inset_0_0_15px_rgba(159,18,57,0.8)]' 
                       : 'bg-slate-700 shadow-inner'
-                    : 'bg-slate-600 hover:bg-slate-500 shadow-[inset_2px_2px_5px_rgba(255,255,255,0.2),inset_-2px_-2px_5px_rgba(0,0,0,0.4)] border border-slate-500'}
+                    : 'bg-slate-600 hover:bg-slate-500 active:bg-slate-400 shadow-[inset_2px_2px_5px_rgba(255,255,255,0.2),inset_-2px_-2px_5px_rgba(0,0,0,0.4)] border border-slate-500'}
                 `}
               >
                 {cell.isRevealed ? (
@@ -367,9 +382,28 @@ export default function Minesweeper({ onBack, playerName }) {
           ))}
         </div>
       </div>
-      <p className="mt-8 text-slate-400 text-center font-medium bg-slate-800/50 px-6 py-3 rounded-full border border-slate-700">
-        Tip: <kbd className="bg-slate-700 px-2 py-1 rounded mx-1 text-slate-200">Left Click</kbd> to reveal, <kbd className="bg-slate-700 px-2 py-1 rounded mx-1 text-slate-200">Right Click</kbd> to flag.
-      </p>
+      {/* Touch Controls - Toggle Mode for Mobile */}
+      <div className="mt-8 flex flex-col items-center gap-4">
+        <div className="flex gap-3 bg-slate-800/50 p-3 rounded-2xl border border-slate-700">
+          <button
+            onClick={() => setTouchMode('reveal')}
+            className={`px-6 py-3 rounded-xl font-bold text-sm transition-all ${touchMode === 'reveal' ? 'bg-emerald-500 text-white shadow-lg' : 'bg-slate-700 text-slate-400'}`}
+          >
+            👆 REVEAL
+          </button>
+          <button
+            onClick={() => setTouchMode('flag')}
+            className={`px-6 py-3 rounded-xl font-bold text-sm transition-all ${touchMode === 'flag' ? 'bg-rose-500 text-white shadow-lg' : 'bg-slate-700 text-slate-400'}`}
+          >
+            🚩 FLAG
+          </button>
+        </div>
+        
+        <p className="text-slate-400 text-center text-sm font-medium bg-slate-800/50 px-6 py-3 rounded-full border border-slate-700">
+          Desktop: <kbd className="bg-slate-700 px-2 py-1 rounded mx-1 text-slate-200">Left Click</kbd> reveal, <kbd className="bg-slate-700 px-2 py-1 rounded mx-1 text-slate-200">Right Click</kbd> flag<br/>
+          Mobile: Toggle mode then tap cell
+        </p>
+      </div>
 
       <div className="mt-6 w-full max-w-md px-4">
         <DailyChallengeCard gameId="minesweeper" compact={true} />

@@ -322,6 +322,7 @@ export default function Wordle({ onBack, playerName }) {
           </div>
         )}
 
+        {/* On-Screen Keyboard - Touch Optimized */}
         <div className="flex flex-col gap-2 w-full">
           {KEYBOARD_ROWS.map((row, i) => (
             <div key={i} className="flex justify-center gap-1.5">
@@ -331,7 +332,11 @@ export default function Wordle({ onBack, playerName }) {
                   <button
                     key={key}
                     onClick={() => handleKeyPress(key)}
-                    className={`${isAction ? 'px-4' : 'flex-1 max-w-[40px]'} h-14 rounded-xl font-black text-xs sm:text-sm transition-all active:scale-90 ${isAction ? 'bg-slate-700' : getKeyColor(key)} border-b-4 border-black/20`}
+                    onTouchStart={(e) => {
+                      e.preventDefault();
+                      handleKeyPress(key);
+                    }}
+                    className={`${isAction ? 'px-4' : 'flex-1 max-w-[40px]'} h-14 rounded-xl font-black text-xs sm:text-sm transition-all active:scale-90 ${isAction ? 'bg-slate-700 hover:bg-slate-600' : getKeyColor(key)} border-b-4 border-black/20 select-none`}
                   >
                     {key}
                   </button>

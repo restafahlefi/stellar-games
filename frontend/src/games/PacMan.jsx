@@ -956,10 +956,79 @@ export default function PacMan({ onBack, playerName }) {
         )}
       </div>
 
-      {/* Controls */}
-      <div className="mt-6 text-center">
-        <p className="text-slate-400 font-medium bg-slate-800/50 px-6 py-3 rounded-full border border-slate-700">
-          Use <kbd className="bg-slate-700 px-2 py-1 rounded mx-1 text-slate-200 shadow">Arrow Keys</kbd> to move
+      {/* Touch Controls - Virtual D-Pad for Mobile */}
+      <div className="mt-6 flex flex-col items-center gap-4">
+        <div className="grid grid-cols-3 gap-2 w-48 h-48 bg-slate-800/50 rounded-3xl p-4 border border-slate-700">
+          {/* Up */}
+          <div className="col-start-2"></div>
+          <button
+            onTouchStart={(e) => {
+              e.preventDefault();
+              pacmanRef.current.nextDirection = DIRECTIONS.UP;
+              if (!gameStarted && !showIntermission) {
+                setGameStarted(true);
+                totalDotsRef.current = countDots(mazeRef.current);
+                dotsRemainingRef.current = totalDotsRef.current;
+              }
+            }}
+            className="col-start-2 bg-slate-700 hover:bg-slate-600 active:bg-indigo-500 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600"
+          >
+            ↑
+          </button>
+          
+          {/* Left, Center, Right */}
+          <button
+            onTouchStart={(e) => {
+              e.preventDefault();
+              pacmanRef.current.nextDirection = DIRECTIONS.LEFT;
+              if (!gameStarted && !showIntermission) {
+                setGameStarted(true);
+                totalDotsRef.current = countDots(mazeRef.current);
+                dotsRemainingRef.current = totalDotsRef.current;
+              }
+            }}
+            className="bg-slate-700 hover:bg-slate-600 active:bg-indigo-500 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600"
+          >
+            ←
+          </button>
+          <div className="bg-slate-900/50 rounded-2xl flex items-center justify-center text-4xl">
+            ⚫
+          </div>
+          <button
+            onTouchStart={(e) => {
+              e.preventDefault();
+              pacmanRef.current.nextDirection = DIRECTIONS.RIGHT;
+              if (!gameStarted && !showIntermission) {
+                setGameStarted(true);
+                totalDotsRef.current = countDots(mazeRef.current);
+                dotsRemainingRef.current = totalDotsRef.current;
+              }
+            }}
+            className="bg-slate-700 hover:bg-slate-600 active:bg-indigo-500 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600"
+          >
+            →
+          </button>
+          
+          {/* Down */}
+          <div className="col-start-2"></div>
+          <button
+            onTouchStart={(e) => {
+              e.preventDefault();
+              pacmanRef.current.nextDirection = DIRECTIONS.DOWN;
+              if (!gameStarted && !showIntermission) {
+                setGameStarted(true);
+                totalDotsRef.current = countDots(mazeRef.current);
+                dotsRemainingRef.current = totalDotsRef.current;
+              }
+            }}
+            className="col-start-2 bg-slate-700 hover:bg-slate-600 active:bg-indigo-500 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600"
+          >
+            ↓
+          </button>
+        </div>
+        
+        <p className="text-slate-400 text-sm font-medium bg-slate-800/50 px-6 py-3 rounded-full border border-slate-700">
+          Use <kbd className="bg-slate-700 px-2 py-1 rounded mx-1 text-slate-200 shadow">Arrow Keys</kbd> or <span className="text-indigo-400 font-bold">Touch D-Pad</span>
         </p>
       </div>
 
