@@ -60,6 +60,9 @@ class GitHubBackupService {
         console.log('📦 Initializing new git repository...');
         await this.git.init();
         
+        // Set default branch to main (not master)
+        await this.git.raw(['branch', '-M', 'main']);
+        
         // Configure git user AFTER init
         await this.git.addConfig('user.name', this.githubUsername);
         await this.git.addConfig('user.email', this.githubEmail);
