@@ -200,7 +200,7 @@ function App() {
   const ActiveGameComponent = activeGameId ? GameComponents[activeGameId] : null;
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white font-sans selection:bg-blue-500/30 relative">
+    <div className="min-h-screen bg-slate-950 text-white font-sans selection:bg-blue-500/30 relative overflow-x-hidden">
       {/* LOADING SCREEN - Full screen overlay */}
       {isLoading && <LoadingScreen key={loadingKey} onFinished={() => setIsLoading(false)} />}
       
@@ -235,7 +235,7 @@ function App() {
             </div>
           ) : (
             /* Show Homepage */
-            <div className="p-4 sm:p-8 max-w-7xl mx-auto animate-fade-in relative z-10">
+            <div className="p-4 sm:p-8 max-w-7xl mx-auto animate-fade-in relative z-10 overflow-x-hidden">
           {/* HEADER */}
           <div className="flex justify-between items-center mb-12">
             <div className="flex items-center gap-3">
@@ -257,7 +257,10 @@ function App() {
                 // Clear session and show modal again
                 sessionStorage.removeItem('stellar_playerName');
                 
-                // Clear current user context
+                // Clear current user context and reset achievements/challenges
+                achievementService.setCurrentPlayer(null);
+                rewardSystem.setCurrentPlayer(null);
+                
                 setPlayerName(''); // This will trigger useEffect cleanup to stop heartbeat
                 setShowNameModal(true);
               }} className="bg-slate-900 px-4 py-2 rounded-xl border border-slate-800 text-sm font-bold hover:border-blue-500/50 transition-all flex items-center gap-2">
