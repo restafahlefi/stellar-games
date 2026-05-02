@@ -329,9 +329,9 @@ export default function Game2048({ onBack, playerName }) {
               e.preventDefault();
               handleKeyDown({ key: 'ArrowUp' });
             }}
-            className="col-start-2 bg-slate-700 hover:bg-slate-600 active:bg-orange-500 rounded-2xl flex items-center justify-center text-4xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600 h-full"
+            className="col-start-2 bg-orange-600 hover:bg-orange-500 active:bg-orange-400 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-orange-500 h-full"
           >
-            ↑
+            🔼
           </button>
           
           {/* Left, Center, Right */}
@@ -341,11 +341,11 @@ export default function Game2048({ onBack, playerName }) {
               e.preventDefault();
               handleKeyDown({ key: 'ArrowLeft' });
             }}
-            className="bg-slate-700 hover:bg-slate-600 active:bg-orange-500 rounded-2xl flex items-center justify-center text-4xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600 h-full"
+            className="bg-orange-600 hover:bg-orange-500 active:bg-orange-400 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-orange-500 h-full"
           >
-            ←
+            ◀️
           </button>
-          <div className="bg-slate-900/50 rounded-2xl flex items-center justify-center text-2xl font-black text-orange-400 h-full">
+          <div className="bg-slate-900/50 rounded-2xl flex items-center justify-center text-xl font-black text-orange-400 h-full">
             2048
           </div>
           <button
@@ -354,9 +354,9 @@ export default function Game2048({ onBack, playerName }) {
               e.preventDefault();
               handleKeyDown({ key: 'ArrowRight' });
             }}
-            className="bg-slate-700 hover:bg-slate-600 active:bg-orange-500 rounded-2xl flex items-center justify-center text-4xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600 h-full"
+            className="bg-orange-600 hover:bg-orange-500 active:bg-orange-400 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-orange-500 h-full"
           >
-            →
+            ▶️
           </button>
           
           {/* Down */}
@@ -367,14 +367,14 @@ export default function Game2048({ onBack, playerName }) {
               e.preventDefault();
               handleKeyDown({ key: 'ArrowDown' });
             }}
-            className="col-start-2 bg-slate-700 hover:bg-slate-600 active:bg-orange-500 rounded-2xl flex items-center justify-center text-4xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600 h-full"
+            className="col-start-2 bg-orange-600 hover:bg-orange-500 active:bg-orange-400 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-orange-500 h-full"
           >
-            ↓
+            🔽
           </button>
         </div>
         
         <p className="text-slate-400 text-center text-sm font-medium bg-slate-800/50 px-6 py-3 rounded-full border border-slate-700">
-          Use <kbd className="bg-slate-700 px-2 py-1 rounded mx-1 text-slate-200 shadow">Arrows</kbd> or <span className="text-orange-400 font-bold">Touch Buttons</span>
+          Keyboard: <kbd className="bg-slate-700 px-2 py-1 rounded mx-1 text-slate-200 shadow">Arrows</kbd> | Mobile: <span className="text-orange-400 font-bold">Tap Buttons</span>
         </p>
       </div>
 

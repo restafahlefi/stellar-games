@@ -343,9 +343,9 @@ export default function Snake({ onBack, playerName }) {
           <button 
             onClick={(e) => { e.currentTarget.blur(); changeDirection('ArrowUp'); }}
             onTouchStart={(e) => { e.preventDefault(); changeDirection('ArrowUp'); }}
-            className="bg-slate-700 hover:bg-slate-600 active:bg-emerald-500 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600"
+            className="bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-400 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-emerald-500"
           >
-            ↑
+            🔼
           </button>
           <div className="opacity-0"></div>
           
@@ -353,9 +353,9 @@ export default function Snake({ onBack, playerName }) {
           <button 
             onClick={(e) => { e.currentTarget.blur(); changeDirection('ArrowLeft'); }}
             onTouchStart={(e) => { e.preventDefault(); changeDirection('ArrowLeft'); }}
-            className="bg-slate-700 hover:bg-slate-600 active:bg-emerald-500 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600"
+            className="bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-400 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-emerald-500"
           >
-            ←
+            ◀️
           </button>
           <div className="bg-slate-900/50 rounded-2xl flex items-center justify-center text-4xl border-2 border-slate-700">
             🐍
@@ -363,9 +363,9 @@ export default function Snake({ onBack, playerName }) {
           <button 
             onClick={(e) => { e.currentTarget.blur(); changeDirection('ArrowRight'); }}
             onTouchStart={(e) => { e.preventDefault(); changeDirection('ArrowRight'); }}
-            className="bg-slate-700 hover:bg-slate-600 active:bg-emerald-500 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600"
+            className="bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-400 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-emerald-500"
           >
-            →
+            ▶️
           </button>
           
           {/* Row 3 - Down */}
@@ -373,9 +373,9 @@ export default function Snake({ onBack, playerName }) {
           <button 
             onClick={(e) => { e.currentTarget.blur(); changeDirection('ArrowDown'); }}
             onTouchStart={(e) => { e.preventDefault(); changeDirection('ArrowDown'); }}
-            className="bg-slate-700 hover:bg-slate-600 active:bg-emerald-500 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600"
+            className="bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-400 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-emerald-500"
           >
-            ↓
+            🔽
           </button>
           <div className="opacity-0"></div>
         </div>

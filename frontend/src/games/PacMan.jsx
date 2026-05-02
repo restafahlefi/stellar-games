@@ -979,9 +979,9 @@ export default function PacMan({ onBack, playerName }) {
                 dotsRemainingRef.current = totalDotsRef.current;
               }
             }}
-            className="col-start-2 bg-slate-700 hover:bg-slate-600 active:bg-indigo-500 rounded-2xl flex items-center justify-center text-4xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600 h-full"
+            className="col-start-2 bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-400 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-indigo-500 h-full"
           >
-            ↑
+            🔼
           </button>
           
           {/* Left, Center, Right */}
@@ -1003,11 +1003,11 @@ export default function PacMan({ onBack, playerName }) {
                 dotsRemainingRef.current = totalDotsRef.current;
               }
             }}
-            className="bg-slate-700 hover:bg-slate-600 active:bg-indigo-500 rounded-2xl flex items-center justify-center text-4xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600 h-full"
+            className="bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-400 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-indigo-500 h-full"
           >
-            ←
+            ◀️
           </button>
-          <div className="bg-slate-900/50 rounded-2xl flex items-center justify-center text-4xl h-full">
+          <div className="bg-slate-900/50 rounded-2xl flex items-center justify-center text-3xl h-full">
             ⚫
           </div>
           <button
@@ -1028,9 +1028,9 @@ export default function PacMan({ onBack, playerName }) {
                 dotsRemainingRef.current = totalDotsRef.current;
               }
             }}
-            className="bg-slate-700 hover:bg-slate-600 active:bg-indigo-500 rounded-2xl flex items-center justify-center text-4xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600 h-full"
+            className="bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-400 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-indigo-500 h-full"
           >
-            →
+            ▶️
           </button>
           
           {/* Down */}
@@ -1053,14 +1053,14 @@ export default function PacMan({ onBack, playerName }) {
                 dotsRemainingRef.current = totalDotsRef.current;
               }
             }}
-            className="col-start-2 bg-slate-700 hover:bg-slate-600 active:bg-indigo-500 rounded-2xl flex items-center justify-center text-4xl font-black transition-all active:scale-95 shadow-lg border-2 border-slate-600 h-full"
+            className="col-start-2 bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-400 rounded-2xl flex items-center justify-center text-3xl font-black transition-all active:scale-95 shadow-lg border-2 border-indigo-500 h-full"
           >
-            ↓
+            🔽
           </button>
         </div>
         
         <p className="text-slate-400 text-sm font-medium bg-slate-800/50 px-6 py-3 rounded-full border border-slate-700">
-          Use <kbd className="bg-slate-700 px-2 py-1 rounded mx-1 text-slate-200 shadow">Arrow Keys</kbd> or <span className="text-indigo-400 font-bold">Touch D-Pad</span>
+          Keyboard: <kbd className="bg-slate-700 px-2 py-1 rounded mx-1 text-slate-200 shadow">Arrow Keys</kbd> | Mobile: <span className="text-indigo-400 font-bold">Tap Buttons</span>
         </p>
       </div>
 
